@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,15 +23,15 @@
         </activity>
 
         <activity
-            android:name=".OpenGLCameraActivity"
+            android:name=".activity.OpenGLCameraActivity"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".PhotoViewActivity"
+            android:name=".activity.PhotoViewActivity"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".TripleOnLongPressActivity"
+            android:name=".activity.TripleOnLongPressActivity"
             android:screenOrientation="portrait"/>
     </application>
 

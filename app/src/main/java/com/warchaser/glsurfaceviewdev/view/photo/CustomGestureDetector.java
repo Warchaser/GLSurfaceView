@@ -1,10 +1,12 @@
-package com.warchaser.glsurfaceviewdev;
+package com.warchaser.glsurfaceviewdev.view.photo;
 
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
+
+import com.warchaser.glsurfaceviewdev.util.NLog;
 
 /**
  * 自定义缩放手势监听器

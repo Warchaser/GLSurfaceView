@@ -1,4 +1,4 @@
-package com.warchaser.glsurfaceviewdev;
+package com.warchaser.glsurfaceviewdev.view.photo;
 
 import android.view.MotionEvent;
 import android.widget.ImageView;

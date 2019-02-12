@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <com.warchaser.glsurfaceviewdev.LongPressButton
+    <com.warchaser.glsurfaceviewdev.view.thumbup.LongPressButton
         android:id="@+id/mBtnLongPress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

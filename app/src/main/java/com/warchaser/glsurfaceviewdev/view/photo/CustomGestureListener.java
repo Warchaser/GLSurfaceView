@@ -1,4 +1,4 @@
-package com.warchaser.glsurfaceviewdev;
+package com.warchaser.glsurfaceviewdev.view.photo;
 
 /**
  * 自定义手势监听

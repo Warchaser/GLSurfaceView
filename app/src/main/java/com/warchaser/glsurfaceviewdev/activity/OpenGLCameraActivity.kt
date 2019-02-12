@@ -1,4 +1,4 @@
-package com.warchaser.glsurfaceviewdev
+package com.warchaser.glsurfaceviewdev.activity
 
 import android.Manifest
 import android.content.Context
@@ -14,6 +14,8 @@ import android.support.v4.app.ActivityCompat
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
+import com.warchaser.glsurfaceviewdev.util.NLog
+import com.warchaser.glsurfaceviewdev.R
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_open_gl_camera.*
 import java.lang.Exception

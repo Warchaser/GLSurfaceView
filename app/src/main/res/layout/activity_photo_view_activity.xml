@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.warchaser.glsurfaceviewdev.PhotoView
+    <com.warchaser.glsurfaceviewdev.view.photo.PhotoView
         android:id="@+id/mPhotoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

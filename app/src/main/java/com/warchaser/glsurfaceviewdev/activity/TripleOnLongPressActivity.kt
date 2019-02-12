@@ -1,9 +1,12 @@
-package com.warchaser.glsurfaceviewdev
+package com.warchaser.glsurfaceviewdev.activity
 
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.animation.AccelerateDecelerateInterpolator
+import com.warchaser.glsurfaceviewdev.view.thumbup.LongPressButton
+import com.warchaser.glsurfaceviewdev.util.NLog
+import com.warchaser.glsurfaceviewdev.R
 import kotlinx.android.synthetic.main.activity_triple_on_press.*
 
 class TripleOnLongPressActivity : AppCompatActivity(){
@@ -17,7 +20,7 @@ class TripleOnLongPressActivity : AppCompatActivity(){
     }
 
     private fun initialize(){
-        mBtnLongPress.setOnLongPressListener(object : LongPressButton.OnLongPressListener{
+        mBtnLongPress.setOnLongPressListener(object : LongPressButton.OnLongPressListener {
             override fun onLongPressActivated() {
                 mBtnCoin.progress = 0
                 mBtn2Collection.progress = 0

@@ -1,4 +1,4 @@
-package com.warchaser.glsurfaceviewdev;
+package com.warchaser.glsurfaceviewdev.view.thumbup;
 
 import android.content.Context;
 import android.os.Handler;

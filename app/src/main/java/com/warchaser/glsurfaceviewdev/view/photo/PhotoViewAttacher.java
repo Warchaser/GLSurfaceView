@@ -1,4 +1,4 @@
-package com.warchaser.glsurfaceviewdev;
+package com.warchaser.glsurfaceviewdev.view.photo;
 
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -10,6 +10,8 @@ import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
+
+import com.warchaser.glsurfaceviewdev.util.NLog;
 
 /**
  * MSCALE_X, MSKEW_X, MTRANS_X

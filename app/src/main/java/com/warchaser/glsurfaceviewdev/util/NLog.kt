@@ -1,9 +1,10 @@
-package com.warchaser.glsurfaceviewdev
+package com.warchaser.glsurfaceviewdev.util
 
 import android.content.Context
 import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
+import com.warchaser.glsurfaceviewdev.BuildConfig
 
 import org.json.JSONArray
 import org.json.JSONObject
@@ -176,7 +177,7 @@ object NLog {
     @Synchronized
     private fun writeLog2File(tag : String, msg : String){
         if(TextUtils.isEmpty(getLogPath())){
-            NLog.e(tag, "LOG_PATH is empty!")
+            e(tag, "LOG_PATH is empty!")
             return
         }
 
@@ -252,9 +253,9 @@ object NLog {
     @JvmStatic
     fun printLine(tag : String, isTop : Boolean){
         if(isTop){
-            NLog.e(tag, "╔═══════════════════════════════════════════════════════════════════════════════════════")
+            e(tag, "╔═══════════════════════════════════════════════════════════════════════════════════════")
         } else {
-            NLog.e(tag, "╚═══════════════════════════════════════════════════════════════════════════════════════")
+            e(tag, "╚═══════════════════════════════════════════════════════════════════════════════════════")
         }
     }
 
@@ -292,7 +293,7 @@ object NLog {
         message = JSON_RESULT + LINE_SEPARATOR + message
         val lines : List<String> = message.split(LINE_SEPARATOR)
         for (line : String in lines){
-            NLog.e(tag, line)
+            e(tag, line)
         }
 //        printLine(tag, false)
 
