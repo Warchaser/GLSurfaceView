@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.activity_triple_on_press.*
 
 class TripleOnLongPressActivity : AppCompatActivity(){
 
+    private var mValueAnimator : ValueAnimator ? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,21 +40,33 @@ class TripleOnLongPressActivity : AppCompatActivity(){
             }
 
             override fun onLongPressCancelled() {
-                val widthAnimation = ValueAnimator.ofInt(mBtnCoin.progress, 0)
-                widthAnimation.duration = 1000
-                widthAnimation.interpolator = AccelerateDecelerateInterpolator()
-                widthAnimation.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener{
+                startAnimation(mBtnCoin.progress, 0)
+            }
+
+        })
+    }
+
+    private fun startAnimation(vararg values : Int){
+
+        if(mValueAnimator == null){
+            mValueAnimator = ValueAnimator.ofInt(*values)
+            mValueAnimator?.run{
+                duration = 1000
+                interpolator = AccelerateDecelerateInterpolator()
+                addUpdateListener(object : ValueAnimator.AnimatorUpdateListener{
                     override fun onAnimationUpdate(animation: ValueAnimator?) {
                         val value = animation?.animatedValue as Int
                         mBtnCoin.progress = value
                         mBtn2Collection.progress = value
                     }
                 })
-
-                widthAnimation.start()
             }
 
-        })
+        } else {
+            mValueAnimator?.setIntValues(*values)
+        }
+        
+        mValueAnimator?.start()
     }
 
     override fun onDestroy() {
