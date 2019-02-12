@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <com.warchaser.glsurfaceviewdev.LongPressButton
+        android:id="@+id/mBtnLongPress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点赞"/>
+
+    <com.dd.ProgressWheel
+        android:id="@+id/mBtnCoin"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <com.dd.ProgressWheel
+        android:id="@+id/mBtn2Collection"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+</LinearLayout>
