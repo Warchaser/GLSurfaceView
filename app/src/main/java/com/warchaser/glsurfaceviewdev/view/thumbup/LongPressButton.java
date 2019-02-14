@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LongPressButton extends android.support.v7.widget.AppCompatButton implements View.OnLongClickListener {
 
@@ -27,6 +29,8 @@ public class LongPressButton extends android.support.v7.widget.AppCompatButton i
     private static final int LONG_PRESS_CANCELLED = 0x004;
 
     private OnLongPressListener mOnLongPressListener;
+
+    private ExecutorService mSingleThreadExecutor = Executors.newSingleThreadExecutor();
 
     public LongPressButton(Context context) {
         super(context);
@@ -54,7 +58,7 @@ public class LongPressButton extends android.support.v7.widget.AppCompatButton i
     @Override
     public boolean onLongClick(View v) {
         if(mRunnable != null){
-            new Thread(mRunnable).start();
+            mSingleThreadExecutor.execute(mRunnable);
         }
         return false;
     }
@@ -76,6 +80,10 @@ public class LongPressButton extends android.support.v7.widget.AppCompatButton i
             mMessageHandler.removeCallbacks(mRunnable);
             mMessageHandler.removeCallbacksAndMessages(null);
             mMessageHandler = null;
+        }
+
+        if(mSingleThreadExecutor != null && !mSingleThreadExecutor.isShutdown()){
+            mSingleThreadExecutor.shutdown();
         }
 
         mRunnable = null;
