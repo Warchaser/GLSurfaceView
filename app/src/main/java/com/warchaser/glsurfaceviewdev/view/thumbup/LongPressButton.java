@@ -11,6 +11,9 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ *
+ * */
 public class LongPressButton extends android.support.v7.widget.AppCompatButton implements View.OnLongClickListener {
 
     private MessageRunnable mRunnable;
@@ -57,7 +60,7 @@ public class LongPressButton extends android.support.v7.widget.AppCompatButton i
 
     @Override
     public boolean onLongClick(View v) {
-        if(mRunnable != null){
+        if(mSingleThreadExecutor != null && mRunnable != null){
             mSingleThreadExecutor.execute(mRunnable);
         }
         return false;
