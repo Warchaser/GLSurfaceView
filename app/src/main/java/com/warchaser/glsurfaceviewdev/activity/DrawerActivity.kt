@@ -14,28 +14,7 @@ import kotlinx.android.synthetic.main.activity_drawer.*
  * */
 class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
 
-
     private var mLastMenuItem : MenuItem ? = null
-
-    /**
-     * 底部选中图标Id数组
-     * */
-    private val mIconSelectedIds : IntArray = intArrayOf(
-            R.mipmap.ic_home_selected,
-            R.mipmap.ic_category_selected,
-            R.mipmap.ic_dynamic_selected,
-            R.mipmap.ic_communicate_selected
-    )
-
-    /**
-     * 底部未选中图标Id数组
-     * */
-    private val mIconUnSelectedIds : IntArray = intArrayOf(
-            R.mipmap.ic_home_unselected,
-            R.mipmap.ic_category_unselected,
-            R.mipmap.ic_dynamic_unselected,
-            R.mipmap.ic_communicate_unselected
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

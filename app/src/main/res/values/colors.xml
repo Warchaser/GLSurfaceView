@@ -5,7 +5,10 @@
     <color name="colorAccent">@android:color/black</color>
 
     <color name="color_white">#FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
 
     <color name="nav_head_image_background">#F8668D</color>
     <color name="bangumi_badge_gary">#e58B8B8C</color>
+
+    <color name="bottom_bar_text_color_unchecked">#999999</color>
 </resources>

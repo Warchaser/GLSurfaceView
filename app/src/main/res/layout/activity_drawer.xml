@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mDrawerLayout"
@@ -7,10 +8,61 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-    <FrameLayout
-        android:id="@+id/mContainer"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/mContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bangumi_badge_gary"
+            android:layout_above="@id/mRadioGroup"/>
+
+        <RadioGroup
+            android:id="@+id/mRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/mFirstBtn"
+                style="@style/BottomBarMainStyle"
+                android:background="@color/transparent"
+                android:drawableTop="@drawable/bottom_first_btn"
+                android:text="@string/bottom_bar_home"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/mSecondBtn"
+                style="@style/BottomBarMainStyle"
+                android:background="@color/transparent"
+                android:drawableTop="@drawable/bottom_second_btn"
+                android:text="@string/bottom_bar_category"/>
+
+            <RadioButton
+                android:id="@+id/mThirdBtn"
+                style="@style/BottomBarMainStyle"
+                android:background="@color/transparent"
+                android:drawableTop="@drawable/bottom_third_btn"
+                android:text="@string/bottom_bar_dynamic"/>
+
+            <RadioButton
+                android:id="@+id/mForthBtn"
+                style="@style/BottomBarMainStyle"
+                android:background="@color/transparent"
+                android:drawableTop="@drawable/bottom_forth_btn"
+                android:text="@string/bottom_bar_communicate"/>
+
+        </RadioGroup>
+
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/mNavigationView"

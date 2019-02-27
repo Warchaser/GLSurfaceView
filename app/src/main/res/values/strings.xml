@@ -16,4 +16,11 @@
     <string name="item_bottom_settings">设置</string>
     <string name="item_bottom_theme">主题</string>
     <string name="item_bottom_night_mode">夜间</string>
+
+    <!--DrawerActivity MainBottomBar-->
+    <string name="bottom_bar_home">首页</string>
+    <string name="bottom_bar_category">精选</string>
+    <string name="bottom_bar_dynamic">动态</string>
+    <string name="bottom_bar_communicate">社交</string>
+
 </resources>
