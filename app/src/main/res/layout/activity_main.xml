@@ -26,4 +26,10 @@
         android:layout_height="wrap_content"
         android:text="素质三连"/>
 
+    <Button
+        android:id="@+id/mBtnNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NavigationView"/>
+
 </LinearLayout>

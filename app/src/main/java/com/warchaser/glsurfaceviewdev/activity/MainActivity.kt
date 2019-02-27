@@ -47,6 +47,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
+        mBtnNavigationView.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                Intent(this@MainActivity, DrawerActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        })
     }
 
 

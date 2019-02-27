@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#fb7299</color>
+    <color name="colorPrimaryDark">#b85671</color>
+    <color name="colorAccent">@android:color/black</color>
+
+    <color name="color_white">#FFFFFF</color>
+
+    <color name="nav_head_image_background">#F8668D</color>
+    <color name="bangumi_badge_gary">#e58B8B8C</color>
 </resources>
