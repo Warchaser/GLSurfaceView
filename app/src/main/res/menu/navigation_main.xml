@@ -45,7 +45,8 @@
         <item
             android:id="@+id/item_tracker"
             android:icon="@mipmap/ic_account_balance_wallet_black_24dp"
-            android:title="@string/item_tracker" />
+            android:title="@string/item_tracker"
+            android:checkable="false"/>
 
     </group>
 
@@ -56,12 +57,14 @@
         <item
             android:id="@+id/item_theme"
             android:icon="@mipmap/ic_color_lens_black_24dp"
-            android:title="@string/item_theme" />
+            android:title="@string/item_theme"
+            android:checkable="false"/>
 
         <item
             android:id="@+id/item_app"
             android:icon="@mipmap/ic_shop_black_24dp"
-            android:title="@string/item_app" />
+            android:title="@string/item_app"
+            android:checkable="false"/>
 
 
         <item

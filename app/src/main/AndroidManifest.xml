@@ -37,6 +37,18 @@
         <activity
             android:name=".activity.DrawerActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".fragment.drawer.AppRecommendationActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".fragment.drawer.MyWalletActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".fragment.drawer.ThemeSelectionActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
