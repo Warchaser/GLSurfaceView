@@ -68,7 +68,17 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
 
             override fun onDrawerClosed(p0: View) {
-                when(getClickedMenuItem()?.itemId){
+
+                val itemId = getClickedMenuItem()?.itemId
+                if(itemId == R.id.item_vip
+                        || itemId == R.id.item_download
+                        || itemId == R.id.item_favourite
+                        || itemId == R.id.item_history
+                        || itemId == R.id.item_group){
+                    hideBottomBar()
+                }
+
+                when(itemId){
                     R.id.item_home->{
                         back2Home()
                     }
@@ -231,14 +241,6 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        if(p0.itemId == R.id.item_vip
-                || p0.itemId == R.id.item_download
-                || p0.itemId == R.id.item_favourite
-                || p0.itemId == R.id.item_history
-                || p0.itemId == R.id.item_group){
-            hideBottomBar()
-        }
-
         setClickedMenuItem(p0)
         mDrawerLayout.closeDrawer(GravityCompat.START)
         return true
