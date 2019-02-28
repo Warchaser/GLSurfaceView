@@ -225,6 +225,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         supportFragmentManager.popBackStackImmediate(null, 1)
 
         setCurrentTag(mRadioGroup.checkedRadioButtonId)
+        mTempFragment = FragmentStackManager.getInstance().getCertainFragment(mCurrentFragmentTag).fragment
         mNavigationView.setCheckedItem(R.id.item_home)
 
         showBottomBar()
