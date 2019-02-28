@@ -36,8 +36,7 @@
                 style="@style/BottomBarMainStyle"
                 android:background="@color/transparent"
                 android:drawableTop="@drawable/bottom_first_btn"
-                android:text="@string/bottom_bar_home"
-                android:checked="true"/>
+                android:text="@string/bottom_bar_home" />
 
             <RadioButton
                 android:id="@+id/mSecondBtn"
