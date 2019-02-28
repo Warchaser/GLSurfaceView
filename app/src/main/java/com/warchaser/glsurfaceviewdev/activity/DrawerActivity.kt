@@ -41,6 +41,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     private var mCurrentFragmentTag : String = ""
 
+    private var mClickedMenuItem : MenuItem ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +68,47 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
 
             override fun onDrawerClosed(p0: View) {
-                println("closed")
+                when(getClickedMenuItem()?.itemId){
+                    R.id.item_home->{
+                        back2Home()
+                    }
+                    R.id.item_vip->{
+                        changeFragmentIndex(VIP_FRAGMENT, getClickedMenuItem())
+                    }
+                    R.id.item_download->{
+                        changeFragmentIndex(DOWNLOAD_FRAGMENT, getClickedMenuItem())
+                    }
+                    R.id.item_favourite->{
+                        changeFragmentIndex(MY_COLLECTION_FRAGMENT, getClickedMenuItem())
+                    }
+                    R.id.item_history->{
+                        changeFragmentIndex(HISTORY_FRAGMENT, getClickedMenuItem())
+                    }
+                    R.id.item_group->{
+                        changeFragmentIndex(MY_FOLLOWING_FRAGMENT, getClickedMenuItem())
+                    }
+                    R.id.item_tracker->{
+                        Intent(this@DrawerActivity, MyWalletActivity::class.java).apply {
+                            startActivity(this)
+                        }
+                    }
+                    R.id.item_theme->{
+                        Intent(this@DrawerActivity, ThemeSelectionActivity::class.java).apply {
+                            startActivity(this)
+                        }
+                    }
+                    R.id.item_app->{
+                        Intent(this@DrawerActivity, AppRecommendationActivity::class.java).apply {
+                            startActivity(this)
+                        }
+                    }
+                    R.id.item_settings->{
+//                changeFragmentIndex(8 + LENGTH, p0)
+                    }
+                    else->{
+
+                    }
+                }
             }
 
             override fun onDrawerOpened(p0: View) {
@@ -127,7 +168,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         mTempFragment = currentFragment
     }
 
-    private fun changeFragmentIndex(tag : String, item : MenuItem){
+    private fun changeFragmentIndex(tag : String, item : MenuItem?){
 
         mLastMenuItem?.run {
             isChecked = false
@@ -136,7 +177,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         jumpMenuFragment(tag, FragmentStackManager.getInstance().getCertainFragment(mCurrentFragmentTag).fragment)
 
         mCurrentFragmentTag = tag
-        item.isChecked = true
+        item?.isChecked = true
         mLastMenuItem = item
     }
 
@@ -179,6 +220,16 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         showBottomBar()
     }
 
+    @Synchronized
+    private fun setClickedMenuItem(menuItem: MenuItem){
+        mClickedMenuItem = menuItem
+    }
+
+    @Synchronized
+    private fun getClickedMenuItem() : MenuItem ?{
+        return mClickedMenuItem
+    }
+
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         if(p0.itemId == R.id.item_vip
                 || p0.itemId == R.id.item_download
@@ -188,58 +239,9 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             hideBottomBar()
         }
 
+        setClickedMenuItem(p0)
         mDrawerLayout.closeDrawer(GravityCompat.START)
-        when(p0.itemId){
-            R.id.item_home->{
-                back2Home()
-                return true
-            }
-            R.id.item_vip->{
-                changeFragmentIndex(VIP_FRAGMENT, p0)
-                return true
-            }
-            R.id.item_download->{
-                changeFragmentIndex(DOWNLOAD_FRAGMENT, p0)
-                return true
-            }
-            R.id.item_favourite->{
-                changeFragmentIndex(MY_COLLECTION_FRAGMENT, p0)
-                return true
-            }
-            R.id.item_history->{
-                changeFragmentIndex(HISTORY_FRAGMENT, p0)
-                return true
-            }
-            R.id.item_group->{
-                changeFragmentIndex(MY_FOLLOWING_FRAGMENT, p0)
-                return true
-            }
-            R.id.item_tracker->{
-                Intent(this@DrawerActivity, MyWalletActivity::class.java).apply {
-                    startActivity(this)
-                }
-                return true
-            }
-            R.id.item_theme->{
-                Intent(this@DrawerActivity, ThemeSelectionActivity::class.java).apply {
-                    startActivity(this)
-                }
-                return true
-            }
-            R.id.item_app->{
-                Intent(this@DrawerActivity, AppRecommendationActivity::class.java).apply {
-                    startActivity(this)
-                }
-                return true
-            }
-            R.id.item_settings->{
-//                changeFragmentIndex(8 + LENGTH, p0)
-                return true
-            }
-            else->{
-                return false
-            }
-        }
+        return true
     }
 
     override fun onBackPressed() {
