@@ -23,4 +23,29 @@
     <string name="bottom_bar_dynamic">动态</string>
     <string name="bottom_bar_communicate">社交</string>
 
+    <!--HomeFragment-->
+    <string name="title_live">直播</string>
+    <string name="title_recommendation">推荐</string>
+    <string name="title_hot_news">热门</string>
+    <string name="title_order_animation">追番</string>
+
+    <string-array name="home_titles">
+        <item>@string/title_live</item>
+        <item>@string/title_recommendation</item>
+        <item>@string/title_hot_news</item>
+        <item>@string/title_order_animation</item>
+    </string-array>
+
+    <!--DynamicFragment-->
+    <string name="title_videos">视频</string>
+    <string name="title_general">综合</string>
+    <string name="title_hot">热门</string>
+
+    <string-array name="dynamic_titles">
+        <item>@string/title_videos</item>
+        <item>@string/title_general</item>
+        <item>@string/title_hot</item>
+    </string-array>
+
 </resources>
+

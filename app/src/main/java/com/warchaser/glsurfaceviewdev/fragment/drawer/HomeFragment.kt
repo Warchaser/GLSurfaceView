@@ -1,19 +1,31 @@
 package com.warchaser.glsurfaceviewdev.fragment.drawer
 
-import android.widget.TextView
+import android.support.v4.view.ViewPager
+import com.flyco.tablayout.SlidingTabLayout
 import com.warchaser.glsurfaceviewdev.R
+import com.warchaser.glsurfaceviewdev.adapter.HomeFragmentAdapter
 import com.warchaser.glsurfaceviewdev.base.LazyFragment
 
 class HomeFragment : LazyFragment(){
 
-    private var mTv : TextView? = null
+    private var mViewPager : ViewPager ? = null
+    private var mSlidingTabLayout : SlidingTabLayout ? = null
 
     override val mLayoutResourceId: Int
-        get() = R.layout.fragment_normal
+        get() = R.layout.fragment_home
 
     override fun onLoadView() {
-        mTv = findById(R.id.mTv)
-        mTv?.text = getText(R.string.bottom_bar_home)
+        mSlidingTabLayout = findById(R.id.mSlidingTabLayout)
+        mViewPager = findById(R.id.mViewPager)
+
+        val adapter = HomeFragmentAdapter(childFragmentManager, activity?.applicationContext!!)
+        mViewPager?.run {
+            offscreenPageLimit = 4
+            this.adapter = adapter
+        }
+
+        mSlidingTabLayout?.setViewPager(mViewPager)
+        mViewPager?.currentItem = 1
     }
 
 }
