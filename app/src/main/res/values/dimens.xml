@@ -5,4 +5,6 @@
 
     <dimen name="drawer_header_height">200dp</dimen>
 
+    <dimen name="drawer_padding_bottom">50dp</dimen>
+
 </resources>

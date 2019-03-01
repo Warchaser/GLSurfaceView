@@ -2,6 +2,7 @@ package com.warchaser.glsurfaceviewdev.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.internal.NavigationMenuView
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
@@ -10,11 +11,13 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RadioGroup
 import com.warchaser.glsurfaceviewdev.R
 import com.warchaser.glsurfaceviewdev.base.FragmentStackBean
 import com.warchaser.glsurfaceviewdev.base.FragmentStackManager
 import com.warchaser.glsurfaceviewdev.fragment.drawer.*
+import com.warchaser.glsurfaceviewdev.util.DisplayUtil
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_drawer.*
 
@@ -52,6 +55,12 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     private fun initialize(){
         mNavigationView.setNavigationItemSelectedListener(this)
+        val menuView = mNavigationView.getChildAt(0)
+        if(menuView != null && menuView is NavigationMenuView){
+            menuView.isVerticalScrollBarEnabled  = false
+
+            menuView.setPadding(0, 0 ,0 , mLyDrawerBottomMenu.layoutParams.height)
+        }
 
         FragmentStackManager.getInstance().pushFragment(FragmentStackBean(COMMUNICATE_FRAGMENT, CommunicateFragment()))
         FragmentStackManager.getInstance().pushFragment(FragmentStackBean(DYNAMIC_FRAGMENT, DynamicFragment()))
@@ -241,9 +250,13 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         return mClickedMenuItem
     }
 
+    private fun closeDrawer(){
+        mDrawerLayout.closeDrawer(GravityCompat.START)
+    }
+
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         setClickedMenuItem(p0)
-        mDrawerLayout.closeDrawer(GravityCompat.START)
+        closeDrawer()
         return true
     }
 
@@ -252,7 +265,11 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         if(amount > 0){
             back2Home()
         } else {
-            super.onBackPressed()
+            if(mDrawerLayout.isDrawerOpen(mNavigationView)){
+                closeDrawer()
+            } else {
+                super.onBackPressed()
+            }
         }
     }
 
