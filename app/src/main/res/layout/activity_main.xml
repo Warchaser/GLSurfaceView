@@ -32,4 +32,10 @@
         android:layout_height="wrap_content"
         android:text="NavigationView"/>
 
+    <Button
+        android:id="@+id/mBtnOpenGL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_open_gl"/>
+
 </LinearLayout>

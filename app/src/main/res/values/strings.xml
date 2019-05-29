@@ -47,5 +47,8 @@
         <item>@string/title_hot</item>
     </string-array>
 
+    <!--OpenGL-->
+    <string name="title_open_gl">OpenGl</string>
+
 </resources>
 

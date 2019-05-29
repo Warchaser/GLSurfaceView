@@ -55,6 +55,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
+        mBtnOpenGL.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                Intent(this@MainActivity, OpenGLActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        })
     }
 
 
