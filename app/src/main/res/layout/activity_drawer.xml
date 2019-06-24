@@ -13,10 +13,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/mContainer"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_above="@id/mRadioGroup">
+
+            <com.warchaser.titlebar.TitleBar
+                android:id="@+id/mTitleBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:themeCus="blue"
+                app:titleText="@string/app_name"
+                app:backGroundColor="@color/colorPrimary"/>
+
+            <FrameLayout
+                android:id="@+id/mContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

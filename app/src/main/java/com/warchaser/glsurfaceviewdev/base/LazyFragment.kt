@@ -1,5 +1,7 @@
 package com.warchaser.glsurfaceviewdev.base
 
+import com.warchaser.glsurfaceviewdev.util.NLog
+
 abstract class LazyFragment : BaseFragment(){
 
 
@@ -18,6 +20,7 @@ abstract class LazyFragment : BaseFragment(){
             mIsVisible = false
             onInvisible()
         }
+        NLog.e("LazyFragment", getSimpleClassName() + "setUserVisibleHint." + isVisibleToUser)
     }
 
     /**
@@ -44,6 +47,20 @@ abstract class LazyFragment : BaseFragment(){
     }
 
     protected open fun onVisibleOnce(){
+
+    }
+
+    private fun getSimpleClassName(): String {
+        val clazz = this.javaClass
+        val str1 = clazz.name.replace("$", ".")
+        val str2 = str1.replace(clazz.getPackage().name, "") + "."
+
+        return str2.substring(1)
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        NLog.e("LazyFragment", getSimpleClassName() + "onHiddenChanged." + hidden)
 
     }
 

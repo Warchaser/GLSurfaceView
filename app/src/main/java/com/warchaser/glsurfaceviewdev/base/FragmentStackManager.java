@@ -46,6 +46,12 @@ public class FragmentStackManager {
         }
     }
 
+    public void popAllFragments(){
+        if(isStackAvailable()){
+            mStack.clear();
+        }
+    }
+
     public void popCertainFragment(@NotNull FragmentStackBean bean){
         if(isStackAvailable()){
             final int size = mStack.size();

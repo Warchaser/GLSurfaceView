@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitleBar">
+        <attr name="themeCus" format="enum">
+            <enum name="white" value="0"/>
+            <enum name="blue" value="1"/>
+            <enum name="transparent" value="2"/>
+            <enum name="black" value="3"/>
+        </attr>
+        <attr name="titleText" format="string"/>
+        <attr name="backEndText" format="string"/>
+        <attr name="backGroundColor" format="color"/>
+    </declare-styleable>
+</resources>

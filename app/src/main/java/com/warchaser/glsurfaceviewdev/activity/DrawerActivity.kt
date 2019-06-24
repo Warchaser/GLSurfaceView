@@ -8,16 +8,16 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.RadioGroup
 import com.warchaser.glsurfaceviewdev.R
+import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import com.warchaser.glsurfaceviewdev.base.FragmentStackBean
 import com.warchaser.glsurfaceviewdev.base.FragmentStackManager
 import com.warchaser.glsurfaceviewdev.fragment.drawer.*
-import com.warchaser.glsurfaceviewdev.util.DisplayUtil
+import com.warchaser.titlebar.util.StatusBarUtil
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_drawer.*
 
@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_drawer.*
  * 抽屉activity
  * 包含NavigationView
  * */
-class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener{
 
     private var mLastMenuItem : MenuItem ? = null
 
@@ -140,6 +140,13 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
                 setCurrentTag(checkedId)
                 switchFragment(FragmentStackManager.getInstance().getCertainFragment(mCurrentFragmentTag).fragment)
+            }
+        })
+
+        mDrawerLayout.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                StatusBarUtil.cutOutTitleBar(mTitleBar, this@DrawerActivity)
+                mDrawerLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
 
@@ -275,6 +282,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     override fun onDestroy() {
         clearFindViewByIdCache()
+        FragmentStackManager.getInstance().popAllFragments()
         super.onDestroy()
     }
 
