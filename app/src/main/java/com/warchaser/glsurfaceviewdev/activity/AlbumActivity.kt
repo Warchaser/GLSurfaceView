@@ -50,6 +50,8 @@ class AlbumActivity : BaseActivity() {
 
     private var mBundle: Bundle? = null
 
+    private val PATH : String = "/DCIM/her"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_scan)
@@ -148,7 +150,7 @@ class AlbumActivity : BaseActivity() {
 
         Thread(Runnable {
             //查询指定文件夹下的所有图片
-            val imgPath = Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera/sensetime"
+            val imgPath = Environment.getExternalStorageDirectory().toString() + PATH
             val mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             val mContentResolver = this@AlbumActivity
                     .contentResolver

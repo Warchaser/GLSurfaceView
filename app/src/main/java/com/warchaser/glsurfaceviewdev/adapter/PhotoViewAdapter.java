@@ -92,6 +92,7 @@ public class PhotoViewAdapter extends PagerAdapter {
                     }
                 })
                 .apply(mOptions)
+                .fitCenter()
                 .into(photoView);
 
         //给图片增加点击事件
