@@ -28,6 +28,7 @@ import com.warchaser.glsurfaceviewdev.adapter.ImageShowingAdapter;
 import com.warchaser.glsurfaceviewdev.app.BaseActivity;
 import com.warchaser.glsurfaceviewdev.util.Constants;
 import com.warchaser.glsurfaceviewdev.util.DisplayUtil;
+import com.warchaser.glsurfaceviewdev.view.SquareLayout;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -136,7 +137,9 @@ public class AlbumActivity extends BaseActivity {
                     names.clear();
                     names.add(name);
 
-                    ImageView imageView = mRecyclerView.findViewWithTag(position);
+                    SquareLayout rootLayout = mRecyclerView.findViewWithTag(position);
+
+                    ImageView imageView = (ImageView) rootLayout.getChildAt(0);
 
 //                    View itemView = layoutManager.findViewByPosition(position);
 //                    ImageView imageView = itemView.findViewById(R.id.mImageView);

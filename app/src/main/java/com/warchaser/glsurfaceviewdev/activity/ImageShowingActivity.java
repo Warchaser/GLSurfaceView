@@ -25,7 +25,6 @@ public class ImageShowingActivity extends BaseActivity {
     private PhotoViewAdapter mAdapter;
 
     private int mStartPosition = 0;
-    private int mCurrentPosition = 0;
 
     private boolean mIsFinishing = false;
 
@@ -56,10 +55,11 @@ public class ImageShowingActivity extends BaseActivity {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                     if(mIsFinishing){
-                        View sharedElement = mAdapter.getView(mCurrentPosition);
+                        final int position = mViewPager.getCurrentItem();
+                        final View sharedElement = mAdapter.getView(position);
 
-                        if(mStartPosition != mCurrentPosition){
-                            final String name = mAdapter.getPath(mCurrentPosition);
+                        if(mStartPosition != position){
+                            final String name = mAdapter.getPath(position);
                             names.clear();
                             names.add(name);
 
@@ -76,22 +76,6 @@ public class ImageShowingActivity extends BaseActivity {
             mViewPager.setCurrentItem(position);
         }
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                mCurrentPosition = i;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
     }
 
     @Override
@@ -114,7 +98,7 @@ public class ImageShowingActivity extends BaseActivity {
         data.putExtra(Constants.IMAGE_INDEX, position);
         data.putExtra(Constants.IMAGE_PATH, mAdapter.getPath(position));
         data.putExtra(Constants.EXTRA_STARTING_ALBUM_POSITION, mStartPosition);
-        data.putExtra(Constants.EXTRA_CURRENT_ALBUM_POSITION, mCurrentPosition);
+        data.putExtra(Constants.EXTRA_CURRENT_ALBUM_POSITION, position);
         setResult(RESULT_OK, data);
     }
 }

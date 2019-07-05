@@ -13,6 +13,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.warchaser.glsurfaceviewdev.R;
+import com.warchaser.glsurfaceviewdev.view.SquareLayout;
 
 import java.util.ArrayList;
 
@@ -54,10 +55,13 @@ public class ImageShowingAdapter extends RecyclerView.Adapter<ImageShowingAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
         ImageView imageView = viewHolder.mImageView;
-        String path = mList.get(i);
+
+        viewHolder.mRootLayout.setTag(position);
+
+        String path = mList.get(position);
 
         Glide.with(mContext)
                 .load(path)
@@ -65,7 +69,7 @@ public class ImageShowingAdapter extends RecyclerView.Adapter<ImageShowingAdapte
                 .into(imageView);
 
         imageView.setTransitionName(path);
-        imageView.setTag(i);
+        imageView.setTag(R.id.glide_tag, position);
         imageView.setOnClickListener(mOnItemClickListener);
     }
 
@@ -85,7 +89,7 @@ public class ImageShowingAdapter extends RecyclerView.Adapter<ImageShowingAdapte
                 return;
             }
 
-            final int position = (int)v.getTag();
+            final int position = (int)v.getTag(R.id.glide_tag);
 
             switch (v.getId()){
                 case R.id.mImageView:
@@ -104,11 +108,20 @@ public class ImageShowingAdapter extends RecyclerView.Adapter<ImageShowingAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
+        /**
+         * 图片
+         * */
         ImageView mImageView;
+
+        /**
+         * 根布局
+         * */
+        SquareLayout mRootLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.mImageView);
+            mRootLayout = itemView.findViewById(R.id.mRootLayout);
         }
     }
 }
