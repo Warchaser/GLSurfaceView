@@ -105,9 +105,6 @@ public class PhotoViewAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         mAttacher = null;
-        if(position < mViews.size()){
-            mViews.removeAt(position);
-        }
         container.removeView((View) object);
     }
 
@@ -127,6 +124,14 @@ public class PhotoViewAdapter extends PagerAdapter {
 
     public View getView(int position){
         return mViews.get(position);
+    }
+
+    public void clear(){
+
+        if(mViews != null){
+            mViews.clear();
+            mViews = null;
+        }
     }
 
 }

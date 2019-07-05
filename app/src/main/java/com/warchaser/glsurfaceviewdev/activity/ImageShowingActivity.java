@@ -39,6 +39,11 @@ public class ImageShowingActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if(mAdapter != null){
+            mAdapter.clear();
+            mAdapter = null;
+        }
     }
 
     private void initialize(){
