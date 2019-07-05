@@ -97,7 +97,7 @@ class AlbumActivity : BaseActivity() {
 
         mRecyclerView = findViewById(R.id.mRecyclerView)
 
-        val margin = DisplayUtil.dip2px(7f)
+        val margin = DisplayUtil.dip2px(3f)
         val layoutManager = GridLayoutManager(this, 3)
         mRecyclerView!!.layoutManager = layoutManager
         mRecyclerView!!.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -105,8 +105,15 @@ class AlbumActivity : BaseActivity() {
                 super.getItemOffsets(outRect, view, parent, state)
                 val pos = parent.getChildAdapterPosition(view)
                 val column = pos % 3 + 1
-                outRect.top = margin
-                outRect.bottom = margin / 2
+                val line = pos / 3 + 1
+
+                if(line == 1){
+                    outRect.top = 0
+                } else {
+                    outRect.top = margin
+                }
+
+                outRect.bottom = 0
                 outRect.left = (column - 1) * margin / 3
                 outRect.right = (3 - column) * margin / 3
             }
