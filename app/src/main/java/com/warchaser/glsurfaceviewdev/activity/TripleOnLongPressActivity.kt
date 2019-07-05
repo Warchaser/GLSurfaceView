@@ -2,7 +2,7 @@ package com.warchaser.glsurfaceviewdev.activity
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.warchaser.glsurfaceviewdev.view.thumbup.LongPressButton
 import com.warchaser.glsurfaceviewdev.util.NLog

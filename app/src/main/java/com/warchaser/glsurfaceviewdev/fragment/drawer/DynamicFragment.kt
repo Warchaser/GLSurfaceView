@@ -1,6 +1,6 @@
 package com.warchaser.glsurfaceviewdev.fragment.drawer
 
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import com.flyco.tablayout.SlidingTabLayout
 import com.warchaser.glsurfaceviewdev.R
 import com.warchaser.glsurfaceviewdev.adapter.DynamicFragmentAdapter

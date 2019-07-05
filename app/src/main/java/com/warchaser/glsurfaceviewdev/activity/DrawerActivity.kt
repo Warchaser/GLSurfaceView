@@ -2,16 +2,16 @@ package com.warchaser.glsurfaceviewdev.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.internal.NavigationMenuView
-import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.RadioGroup
+import com.google.android.material.internal.NavigationMenuView
 import com.warchaser.glsurfaceviewdev.R
 import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import com.warchaser.glsurfaceviewdev.base.FragmentStackBean
@@ -29,7 +29,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private var mLastMenuItem : MenuItem ? = null
 
-    private var mTempFragment : Fragment ? = null
+    private var mTempFragment : Fragment? = null
 
     private val HOME_FRAGMENT : String = "HOME_FRAGMENT"
     private val CATEGORY_FRAGMENT : String = "CATEGORY_FRAGMENT"

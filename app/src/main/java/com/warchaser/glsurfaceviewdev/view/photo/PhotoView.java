@@ -2,12 +2,10 @@ package com.warchaser.glsurfaceviewdev.view.photo;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.warchaser.glsurfaceviewdev.view.photo.PhotoViewAttacher;
-
-public class PhotoView extends android.support.v7.widget.AppCompatImageView {
+public class PhotoView extends androidx.appcompat.widget.AppCompatImageView {
 
     private PhotoViewAttacher mAttacher;
 

@@ -1,6 +1,6 @@
 package com.warchaser.glsurfaceviewdev.base;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 /**
  * Fragment 栈管理Bean

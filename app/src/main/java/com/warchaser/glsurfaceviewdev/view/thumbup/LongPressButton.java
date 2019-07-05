@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 /**
  *
  * */
-public class LongPressButton extends android.support.v7.widget.AppCompatButton implements View.OnLongClickListener {
+public class LongPressButton extends androidx.appcompat.widget.AppCompatButton implements View.OnLongClickListener {
 
     private MessageRunnable mRunnable;
     private MessageHandler mMessageHandler;

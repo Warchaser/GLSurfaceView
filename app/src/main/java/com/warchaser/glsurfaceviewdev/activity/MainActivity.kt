@@ -1,6 +1,6 @@
 package com.warchaser.glsurfaceviewdev.activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.warchaser.glsurfaceviewdev.R

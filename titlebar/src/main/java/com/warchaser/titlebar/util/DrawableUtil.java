@@ -1,7 +1,7 @@
 package com.warchaser.titlebar.util;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 final public class DrawableUtil {
 

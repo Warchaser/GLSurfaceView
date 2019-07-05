@@ -1,8 +1,8 @@
 package com.warchaser.glsurfaceviewdev.activity
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import com.warchaser.glsurfaceviewdev.R
 import kotlinx.android.synthetic.main.activity_photo_view_activity.*
 

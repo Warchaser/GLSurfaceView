@@ -1,6 +1,6 @@
 package com.warchaser.glsurfaceviewdev.fragment.drawer
 
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import com.flyco.tablayout.SlidingTabLayout
 import com.warchaser.glsurfaceviewdev.R
 import com.warchaser.glsurfaceviewdev.adapter.HomeFragmentAdapter
@@ -8,7 +8,7 @@ import com.warchaser.glsurfaceviewdev.base.LazyFragment
 
 class HomeFragment : LazyFragment(){
 
-    private var mViewPager : ViewPager ? = null
+    private var mViewPager : ViewPager? = null
     private var mSlidingTabLayout : SlidingTabLayout ? = null
 
     override val mLayoutResourceId: Int

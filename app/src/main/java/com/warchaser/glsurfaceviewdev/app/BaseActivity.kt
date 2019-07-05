@@ -3,9 +3,13 @@ package com.warchaser.glsurfaceviewdev.app
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.annotation.NonNull
+
+
 
 open class BaseActivity : AppCompatActivity(){
 
@@ -22,6 +26,25 @@ open class BaseActivity : AppCompatActivity(){
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    /**
+     * 弹出toast的公共方法
+     */
+    fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showToast(strResourceId:Int){
+        Toast.makeText(this,strResourceId, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showToastLong(message: String){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    fun showToastLong(strResourceId:Int){
+        Toast.makeText(this, strResourceId, Toast.LENGTH_LONG).show()
     }
 
 }

@@ -1,7 +1,7 @@
 package com.warchaser.glsurfaceviewdev.fragment.drawer
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.warchaser.glsurfaceviewdev.R
 import kotlinx.android.synthetic.main.activity_normal.*
 

@@ -6,22 +6,25 @@ import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
 import android.hardware.camera2.params.StreamConfigurationMap
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
 import com.warchaser.glsurfaceviewdev.util.NLog
 import com.warchaser.glsurfaceviewdev.R
+import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_open_gl_camera.*
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.RuntimePermissions
 import java.lang.Exception
 import java.util.*
 
-class OpenGLCameraActivity : AppCompatActivity() {
+@RuntimePermissions
+class OpenGLCameraActivity : BaseActivity() {
 
     private var mCameraThread: HandlerThread? = null
     private var mCameraHandler: Handler? = null
@@ -42,6 +45,8 @@ class OpenGLCameraActivity : AppCompatActivity() {
         initialize()
 
         initializeTextureView()
+
+        openCameraWithPermissionCheck()
     }
 
     private fun initialize() {
@@ -72,7 +77,7 @@ class OpenGLCameraActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeCamera(width : Int, height : Int){
+    fun initializeCamera(width : Int, height : Int){
         val cameraManager : CameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
             for(cameraId : String in cameraManager.cameraIdList){
@@ -126,7 +131,8 @@ class OpenGLCameraActivity : AppCompatActivity() {
         }
     }
 
-    private fun openCamera(){
+    @NeedsPermission(Manifest.permission.CAMERA)
+    fun openCamera(){
         val cameraManager : CameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
@@ -185,6 +191,12 @@ class OpenGLCameraActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated function
+        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     override fun onDestroy() {
