@@ -63,6 +63,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
+        mBtnSpecifyFolder.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                Intent(this@MainActivity, AlbumActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        })
     }
 
 
