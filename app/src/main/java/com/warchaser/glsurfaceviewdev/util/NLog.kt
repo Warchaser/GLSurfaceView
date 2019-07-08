@@ -21,7 +21,10 @@ object NLog {
     private const val DELETE_DAYS_DURATION : Int = 5
 
     private val LINE_SEPARATOR : String = System.getProperty("line.separator")
-    private val IS_DEBUG : Boolean = BuildConfig.DEBUG
+
+    @JvmField
+    val IS_DEBUG : Boolean = BuildConfig.DEBUG
+
     private val ALLOW_WRITE_LOG : Boolean = BuildConfig.DEBUG
     private const val JSON_RESULT = "<--[NetWork Response Result]-->"
     private var LOG_PATH : String = ""
@@ -54,7 +57,13 @@ object NLog {
 
     @JvmStatic
     @Synchronized
-    fun e (tag : String, msg : String){
+    fun i(tag : String, format : String, vararg objects: Any){
+        i(tag, String.format(format, *objects))
+    }
+
+    @JvmStatic
+    @Synchronized
+    fun e(tag : String, msg : String){
         if(IS_DEBUG){
             Log.e(tag, msg)
         }
@@ -82,6 +91,13 @@ object NLog {
         if(IS_DEBUG){
             Log.w(tag, msg)
         }
+    }
+
+    @JvmStatic
+    @Synchronized
+    fun eWithFile(tag: String, msg: String) {
+        e(tag, msg)
+        writeLog2File(tag, msg)
     }
 
     @JvmStatic
@@ -156,7 +172,7 @@ object NLog {
         //删除N天前的log，N由DELETE_DAYS_DURATION决定
         Thread(Runnable {
             try {
-                deleteOldFiles(DELETE_DAYS_DURATION, getFiles(LOG_PATH)!!, mTodayDate!!)
+                deleteOldFiles(DELETE_DAYS_DURATION, getFiles(LOG_PATH), mTodayDate)
             } catch (e : Exception){
                 printStackTrace("DELETE_LOGS", e)
             } catch (e : Error){
@@ -177,7 +193,7 @@ object NLog {
     @Synchronized
     private fun writeLog2File(tag : String, msg : String){
         if(TextUtils.isEmpty(getLogPath())){
-            e(tag, "LOG_PATH is empty!")
+            NLog.e(tag, "LOG_PATH is empty!")
             return
         }
 
@@ -225,9 +241,9 @@ object NLog {
     }
 
     @JvmStatic
-    private fun deleteOldFiles(days : Int, files : Array<File>, todayDate : Date){
-        if(files == null || files.isEmpty()){
-           return
+    private fun deleteOldFiles(days : Int, files : Array<File>?, todayDate : Date?){
+        if(files == null || files.isEmpty() || todayDate == null){
+            return
         }
 
         for(file in files){
@@ -253,9 +269,9 @@ object NLog {
     @JvmStatic
     fun printLine(tag : String, isTop : Boolean){
         if(isTop){
-            e(tag, "╔═══════════════════════════════════════════════════════════════════════════════════════")
+            NLog.e(tag, "╔═══════════════════════════════════════════════════════════════════════════════════════")
         } else {
-            e(tag, "╚═══════════════════════════════════════════════════════════════════════════════════════")
+            NLog.e(tag, "╚═══════════════════════════════════════════════════════════════════════════════════════")
         }
     }
 
@@ -265,6 +281,10 @@ object NLog {
     @JvmStatic
     @Synchronized
     fun printJson(tag : String, msg : String){
+
+        if(!IS_DEBUG){
+            return
+        }
 
         var message : String
 
@@ -293,9 +313,30 @@ object NLog {
         message = JSON_RESULT + LINE_SEPARATOR + message
         val lines : List<String> = message.split(LINE_SEPARATOR)
         for (line : String in lines){
-            e(tag, line)
+            NLog.e(tag, line)
         }
 //        printLine(tag, false)
 
+    }
+
+    /**
+     * 打印Html
+     * */
+    @JvmStatic
+    @Synchronized
+    fun printHtml(tag : String, msg : String){
+        if(TextUtils.isEmpty(msg) || !IS_DEBUG){
+            return
+        }
+
+        val lines : List<String> = msg.split("\r\n")
+        for(line : String in lines){
+            NLog.e(tag, line)
+
+            //写Log
+            if(ALLOW_WRITE_LOG){
+                writeLog2File(tag, line)
+            }
+        }
     }
 }

@@ -14,18 +14,17 @@ import android.provider.MediaStore
 import androidx.core.app.SharedElementCallback
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.util.Log
 import android.util.Pair
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ImageView
-import android.widget.Toast
 
 import com.warchaser.glsurfaceviewdev.R
 import com.warchaser.glsurfaceviewdev.adapter.ImageShowingAdapter
 import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import com.warchaser.glsurfaceviewdev.util.Constants
 import com.warchaser.glsurfaceviewdev.util.DisplayUtil
+import com.warchaser.glsurfaceviewdev.util.NLog
 import com.warchaser.glsurfaceviewdev.view.SquareLayout
 import kotlinx.android.synthetic.main.activity_media_scan.*
 import permissions.dispatcher.NeedsPermission
@@ -170,6 +169,7 @@ class AlbumActivity : BaseActivity() {
                         MediaStore.Images.ImageColumns.DATA + " like '%" + imgPath + "%'", null,
                         MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC")
             } catch (e: Exception) {
+                NLog.printStackTrace("AlbumActivity", e)
                 sendMessage(MESSAGE_ERROR, "未找到指定文件夹", -1, -1)
             }
 
@@ -181,7 +181,7 @@ class AlbumActivity : BaseActivity() {
                 val path = mCursor.getString(mCursor
                         .getColumnIndex(MediaStore.Images.Media.DATA))
 
-                Log.e("TAG", path)
+                NLog.e("AlbumActivity", path)
 
                 mImgPaths.add(path)
             }
@@ -272,7 +272,7 @@ class AlbumActivity : BaseActivity() {
 
     companion object {
 
-        private val MESSAGE_SCAN_RESULT = 0x001
-        private val MESSAGE_ERROR = 0x002
+        private const val MESSAGE_SCAN_RESULT = 0x001
+        private const val MESSAGE_ERROR = 0x002
     }
 }
