@@ -27,6 +27,7 @@ import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import com.warchaser.glsurfaceviewdev.util.Constants
 import com.warchaser.glsurfaceviewdev.util.DisplayUtil
 import com.warchaser.glsurfaceviewdev.view.SquareLayout
+import kotlinx.android.synthetic.main.activity_media_scan.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnPermissionDenied
 
@@ -38,7 +39,6 @@ import permissions.dispatcher.RuntimePermissions
 @RuntimePermissions
 class AlbumActivity : BaseActivity() {
 
-    private var mRecyclerView: RecyclerView? = null
     private var mAdapter: ImageShowingAdapter? = null
 
     /**
@@ -64,10 +64,8 @@ class AlbumActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (mMessageHandler != null) {
-            mMessageHandler!!.removeCallbacksAndMessages(null)
-            mMessageHandler = null
-        }
+        mMessageHandler?.removeCallbacksAndMessages(null)
+        mMessageHandler = null
     }
 
     override fun onActivityReenter(resultCode: Int, data: Intent) {
@@ -78,14 +76,14 @@ class AlbumActivity : BaseActivity() {
         val startPosition = mBundle!!.getInt(Constants.EXTRA_STARTING_ALBUM_POSITION)
         val currentPosition = mBundle!!.getInt(Constants.EXTRA_CURRENT_ALBUM_POSITION)
         if (startPosition != currentPosition) {
-            mRecyclerView!!.scrollToPosition(currentPosition)
+            mRecyclerView.scrollToPosition(currentPosition)
         }
 
         supportPostponeEnterTransition()
 
-        mRecyclerView!!.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+        mRecyclerView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
-                mRecyclerView!!.viewTreeObserver.removeOnPreDrawListener(this)
+                mRecyclerView.viewTreeObserver.removeOnPreDrawListener(this)
                 startPostponedEnterTransition()
                 return true
             }
@@ -95,12 +93,10 @@ class AlbumActivity : BaseActivity() {
     private fun initialize() {
         mMessageHandler = MessageHandler(this)
 
-        mRecyclerView = findViewById(R.id.mRecyclerView)
-
         val margin = DisplayUtil.dip2px(3f)
         val layoutManager = GridLayoutManager(this, 3)
-        mRecyclerView!!.layoutManager = layoutManager
-        mRecyclerView!!.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        mRecyclerView.layoutManager = layoutManager
+        mRecyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 super.getItemOffsets(outRect, view, parent, state)
                 val pos = parent.getChildAdapterPosition(view)
@@ -120,24 +116,31 @@ class AlbumActivity : BaseActivity() {
         })
 
         mAdapter = ImageShowingAdapter(this)
-        mRecyclerView!!.adapter = mAdapter
+        mRecyclerView.adapter = mAdapter
 
-        mAdapter!!.setOnItemClickDelegate { position, path, view -> transition(view, path, position) }
+        mAdapter?.setOnItemClickDelegate { position, path, view -> transition(view, path, position) }
 
         setExitSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
                 if (mBundle != null) {
-                    val position = mBundle!!.getInt(Constants.IMAGE_INDEX)
-                    val name = mBundle!!.getString(Constants.IMAGE_PATH)
-                    sharedElements!!.clear()
-                    names!!.clear()
-                    names.add(name)
+                    val position = mBundle?.getInt(Constants.IMAGE_INDEX)
+                    val name = mBundle?.getString(Constants.IMAGE_PATH)
 
-                    val rootLayout = mRecyclerView!!.findViewWithTag<SquareLayout>(position)
+                    val rootLayout = mRecyclerView.findViewWithTag<SquareLayout>(position)
 
                     val imageView = rootLayout.getChildAt(0) as ImageView
 
-                    sharedElements[name!!] = imageView
+                    name?.apply {
+                        names?.run {
+                            clear()
+                            add(this@apply)
+                        }
+
+                        sharedElements?.run {
+                            clear()
+                            this[this@apply] = imageView
+                        }
+                    }
                 }
 
                 mBundle = null
@@ -198,11 +201,9 @@ class AlbumActivity : BaseActivity() {
 
     private fun scanResult() {
         if (mImgPaths.isEmpty()) {
-            Toast.makeText(this, "未扫描到图片", Toast.LENGTH_SHORT).show()
+            sendMessage(MESSAGE_ERROR, "未扫描到图片", -1, -1)
         } else {
-            if (mAdapter != null) {
-                mAdapter!!.notifyDataSetAllChanged(mImgPaths)
-            }
+            mAdapter?.notifyDataSetAllChanged(mImgPaths)
         }
     }
 
@@ -254,11 +255,15 @@ class AlbumActivity : BaseActivity() {
             super.handleMessage(msg)
             val activity = mWeakReference.get()
             when (msg.what) {
-                MESSAGE_SCAN_RESULT -> activity?.scanResult()
+                MESSAGE_SCAN_RESULT -> {
+                    activity?.scanResult()
+                }
+
                 MESSAGE_ERROR -> {
                     val message = msg.obj as String
                     activity?.showToast(message)
                 }
+
                 else -> {
                 }
             }
