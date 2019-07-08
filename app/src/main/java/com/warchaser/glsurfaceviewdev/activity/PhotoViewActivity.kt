@@ -2,12 +2,12 @@ package com.warchaser.glsurfaceviewdev.activity
 
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import com.warchaser.glsurfaceviewdev.R
+import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import kotlinx.android.synthetic.main.activity_photo_view_activity.*
 
 
-class PhotoViewActivity : AppCompatActivity(){
+class PhotoViewActivity : BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

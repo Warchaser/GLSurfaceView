@@ -1,10 +1,10 @@
 package com.warchaser.glsurfaceviewdev.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.warchaser.glsurfaceviewdev.R
+import com.warchaser.glsurfaceviewdev.app.BaseActivity
 
-class OpenGLActivity : AppCompatActivity(){
+class OpenGLActivity : BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

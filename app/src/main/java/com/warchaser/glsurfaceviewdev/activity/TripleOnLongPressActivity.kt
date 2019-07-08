@@ -2,14 +2,14 @@ package com.warchaser.glsurfaceviewdev.activity
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.warchaser.glsurfaceviewdev.view.thumbup.LongPressButton
 import com.warchaser.glsurfaceviewdev.util.NLog
 import com.warchaser.glsurfaceviewdev.R
+import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import kotlinx.android.synthetic.main.activity_triple_on_press.*
 
-class TripleOnLongPressActivity : AppCompatActivity(){
+class TripleOnLongPressActivity : BaseActivity(){
 
     private var mValueAnimator : ValueAnimator ? = null
 

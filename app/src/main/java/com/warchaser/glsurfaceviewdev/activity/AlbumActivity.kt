@@ -49,7 +49,7 @@ class AlbumActivity : BaseActivity() {
 
     private var mBundle: Bundle? = null
 
-    private val PATH : String = "/DCIM/her"
+    private val PATH : String = "/DCIM/我丹"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,7 +153,7 @@ class AlbumActivity : BaseActivity() {
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun getImages() {
         if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
-            sendMessage(MESSAGE_ERROR, "暂无外部存储", -1, -1)
+            sendMessage(MESSAGE_ERROR, getString(R.string.no_external_storage_mounted), -1, -1)
             return
         }
 
@@ -170,7 +170,7 @@ class AlbumActivity : BaseActivity() {
                         MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC")
             } catch (e: Exception) {
                 NLog.printStackTrace("AlbumActivity", e)
-                sendMessage(MESSAGE_ERROR, "未找到指定文件夹", -1, -1)
+                sendMessage(MESSAGE_ERROR, getString(R.string.no_folder_found), -1, -1)
             }
 
             if (mCursor == null) {
@@ -195,13 +195,13 @@ class AlbumActivity : BaseActivity() {
 
     @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun onReadExternalStorageFailed(){
-        showToast("获取读取外部存储权限失败")
+        showToast(R.string.read_external_storage_permission_granted_failed)
         finish()
     }
 
     private fun scanResult() {
         if (mImgPaths.isEmpty()) {
-            sendMessage(MESSAGE_ERROR, "未扫描到图片", -1, -1)
+            sendMessage(MESSAGE_ERROR, getString(R.string.no_pics_scanned), -1, -1)
         } else {
             mAdapter?.notifyDataSetAllChanged(mImgPaths)
         }

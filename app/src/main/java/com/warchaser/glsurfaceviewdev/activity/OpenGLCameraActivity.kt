@@ -40,6 +40,9 @@ class OpenGLCameraActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        fullScreen()
+
         setContentView(R.layout.activity_open_gl_camera)
 
         initialize()
