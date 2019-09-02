@@ -2,6 +2,8 @@ package com.warchaser.glsurfaceviewdev.base;
 
 import android.app.Application;
 
+import com.warchaser.glsurfaceviewdev.util.NLog;
+
 public class App extends Application {
 
     private static App mInstance;
@@ -11,6 +13,7 @@ public class App extends Application {
         super.onCreate();
 
         mInstance = this;
+        NLog.initLogFile(this);
     }
 
     public static App getInstance(){
