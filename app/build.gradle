@@ -19,6 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -34,6 +40,7 @@ dependencies {
 
     implementation project(':library')
     implementation project(':titlebar')
+    implementation project(':openCVLibrary347')
 
     //Costumed ViewPager
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'

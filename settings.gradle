@@ -1,1 +1,2 @@
 include ':app', ':library', ':titlebar'
+include ':openCVLibrary347'
