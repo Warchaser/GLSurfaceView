@@ -16,7 +16,7 @@ import androidx.core.app.ActivityCompat
 import android.util.Size
 import android.util.SparseIntArray
 import android.view.Surface
-import android.view.TextureView
+import android.view.SurfaceHolder
 import android.view.View
 import com.warchaser.glsurfaceviewdev.util.NLog
 import com.warchaser.glsurfaceviewdev.R
@@ -46,7 +46,7 @@ class OpenGLCameraActivity : BaseActivity() {
     private var mCameraDevice: CameraDevice? = null
 
     private var mPreviewRequestBuilder: CaptureRequest.Builder? = null
-    private var mCaptureRequest: CaptureRequest? = null
+    private var mPreViewRequest: CaptureRequest? = null
     private var mCameraCaptureSession: CameraCaptureSession? = null
 
     private var mImageReader: ImageReader? = null
@@ -60,6 +60,19 @@ class OpenGLCameraActivity : BaseActivity() {
 
     private var mSurface : Surface ? = null
     private var mSurfaceTexture : SurfaceTexture ? = null
+
+    private var mSurfaceHolder : SurfaceHolder? = null
+    private var mCameraManager : CameraManager? = null
+
+    private var mCaptureRequest : CaptureRequest? = null
+
+    init {
+        if(!OpenCVLoader.initDebug()){
+            showToast(R.string.open_cv_init_failed)
+            finish()
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,31 +108,54 @@ class OpenGLCameraActivity : BaseActivity() {
     }
 
     private fun initializeTextureView() {
-        mTextureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
-
-            }
-
-            override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
-
-            }
-
-            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
-                return false
-            }
-
-            override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
-                mSurfaceTexture = surface
+        mSurfaceHolder = mSurfaceView.holder
+        mSurfaceHolder?.setKeepScreenOn(true)
+        mSurfaceHolder?.addCallback(object : SurfaceHolder.Callback{
+            override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
                 initializeCamera(width, height)
 //                openCamera()
                 openCameraWithPermissionCheck()
             }
 
-        }
+            override fun surfaceDestroyed(holder: SurfaceHolder?) {
+                NLog.e("SurfaceHolder.Callback", "surfaceDestroyed")
+                mCameraDevice?.close()
+                mCameraDevice = null
+            }
+
+            override fun surfaceCreated(holder: SurfaceHolder?) {
+                NLog.e("SurfaceHolder.Callback", "surfaceCreated")
+            }
+
+        })
+
+//        mTextureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+//            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
+//
+//            }
+//
+//            override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
+//
+//            }
+//
+//            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
+//                return false
+//            }
+//
+//            override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
+//                mSurfaceTexture = surface
+//                initializeCamera(width, height)
+////                openCamera()
+//                openCameraWithPermissionCheck()
+//            }
+//
+//        }
     }
 
     fun initializeCamera(width : Int, height : Int){
-        val cameraManager : CameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        if(mCameraManager == null){
+            mCameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        }
         mImageReader = ImageReader.newInstance(width, height, ImageFormat.JPEG,1)
         mImageReader!!.setOnImageAvailableListener(object : ImageReader.OnImageAvailableListener{
             override fun onImageAvailable(reader: ImageReader?) {
@@ -147,8 +183,8 @@ class OpenGLCameraActivity : BaseActivity() {
         }, mMainHandler)
 
         try {
-            for(cameraId : String in cameraManager.cameraIdList){
-                val characteristics : CameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId)
+            for(cameraId : String in mCameraManager!!.cameraIdList){
+                val characteristics : CameraCharacteristics = mCameraManager!!.getCameraCharacteristics(cameraId)
                 val facing : Int? = characteristics.get(CameraCharacteristics.LENS_FACING)
                 //打开后置摄像头
                 if(facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT){
@@ -169,12 +205,12 @@ class OpenGLCameraActivity : BaseActivity() {
 
     private fun startPreview(){
         try {
-            mSurfaceTexture?.setDefaultBufferSize(mPreviewSize!!.width, mPreviewSize!!.height)
-            mSurface = Surface(mSurfaceTexture)
+//            mSurfaceTexture?.setDefaultBufferSize(mPreviewSize!!.width, mPreviewSize!!.height)
+//            mSurface = Surface(mSurfaceTexture)
             mPreviewRequestBuilder = mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-            mPreviewRequestBuilder?.addTarget(mSurface)
+            mPreviewRequestBuilder?.addTarget(mSurfaceHolder?.surface)
             mCameraDevice?.createCaptureSession(
-                    listOf(mSurface, mImageReader?.surface),
+                    listOf(mSurfaceHolder?.surface, mImageReader?.surface),
                     object : CameraCaptureSession.StateCallback(){
                         override fun onConfigureFailed(session: CameraCaptureSession) {
                             NLog.eWithFile("onConfigureFailed", "onConfigureFailed")
@@ -187,8 +223,8 @@ class OpenGLCameraActivity : BaseActivity() {
 //                                // 打开闪光灯
 //                                mPreviewRequestBuilder?.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF)
 //                                val previewRequest = mPreviewRequestBuilder?.build()
-                                mCaptureRequest = mPreviewRequestBuilder?.build()
-                                mCameraCaptureSession?.setRepeatingRequest(mCaptureRequest, null, mCameraHandler)
+                                mPreViewRequest = mPreviewRequestBuilder?.build()
+                                mCameraCaptureSession?.setRepeatingRequest(mPreViewRequest, null, mCameraHandler)
                             } catch (e : Exception) {
                                 NLog.printStackTrace("onConfigured", e)
                             }
@@ -206,17 +242,20 @@ class OpenGLCameraActivity : BaseActivity() {
 
     private fun takePicture(){
         mCameraDevice?.run {
-            val captureRequestBuilder : CaptureRequest.Builder
             try {
-                captureRequestBuilder = mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
-                captureRequestBuilder.addTarget(mImageReader!!.surface)
+                if(mCaptureRequest == null){
+                    val captureRequestBuilder : CaptureRequest.Builder = mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
+                    captureRequestBuilder.addTarget(mImageReader!!.surface)
 //                captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
 //                captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)
-                val rotation = windowManager.defaultDisplay.rotation
-                captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation))
-                val captureRequest = captureRequestBuilder.build()
-                mCameraCaptureSession?.capture(captureRequest, null, mCameraHandler)
+                    val rotation = windowManager.defaultDisplay.rotation
+                    captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation))
+                    mCaptureRequest = captureRequestBuilder.build()
+                }
+
+                mCameraCaptureSession?.capture(mCaptureRequest, null, mCameraHandler)
             } catch (e : Exception) {
+                e.printStackTrace()
                 NLog.printStackTrace("TakePicture", e)
             }
         }
@@ -225,16 +264,12 @@ class OpenGLCameraActivity : BaseActivity() {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     fun openCamera(){
-
-        if(!OpenCVLoader.initDebug()){
-            showToast(R.string.open_cv_init_failed)
-            finish()
+        if(mCameraManager == null){
+            mCameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         }
-
-        val cameraManager : CameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-                cameraManager.openCamera(mCameraId, mStateCallback, mMainHandler)
+                mCameraManager?.openCamera(mCameraId, mStateCallback, mMainHandler)
             }
         } catch (e : Exception){
             NLog.printStackTrace(TAG, e)
@@ -276,11 +311,12 @@ class OpenGLCameraActivity : BaseActivity() {
         }
 
         override fun onDisconnected(camera: CameraDevice) {
-//            mCameraDevice?.close()
-//            mCameraDevice = null
+            camera.close()
+            mCameraDevice = null
         }
 
         override fun onError(camera: CameraDevice, error: Int) {
+            NLog.e("CameraDevice.StateCallback()", "error: $error")
             camera.close()
             mCameraDevice = null
         }
