@@ -3,14 +3,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.warchaser.glsurfaceviewdev.R
-import com.warchaser.glsurfaceviewdev.activity.camera.CameraActivity
 import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
-
-    private val TAG : String = "MainActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,13 +22,13 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initialize(){
-        mBtnCamera.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                Intent(this@MainActivity, CameraActivity::class.java).apply {
-                    startActivity(this)
-                }
-            }
-        })
+//        mBtnCamera.setOnClickListener(object : View.OnClickListener{
+//            override fun onClick(v: View?) {
+//                Intent(this@MainActivity, CameraActivity::class.java).apply {
+//                    startActivity(this)
+//                }
+//            }
+//        })
 
         mBtnPhotoView.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {

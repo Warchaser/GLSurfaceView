@@ -67,10 +67,6 @@
             android:name=".activity.ImageShowingActivity"
             android:screenOrientation="portrait"/>
 
-        <activity
-            android:name=".activity.camera.CameraActivity"
-            android:screenOrientation="portrait"/>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.warchaser.glsurfaceviewdev.fileprovider"

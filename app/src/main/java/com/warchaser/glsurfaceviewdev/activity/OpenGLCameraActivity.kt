@@ -39,8 +39,6 @@ class OpenGLCameraActivity : BaseActivity() {
 
     private var mMainHandler : Handler? = null
 
-    private val TAG: String = "MainActivity"
-
     private var mPreviewSize: Size? = null
     private var mCameraId: String? = null
     private var mCameraDevice: CameraDevice? = null

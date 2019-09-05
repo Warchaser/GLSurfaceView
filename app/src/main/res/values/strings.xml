@@ -76,5 +76,8 @@
         ]]>
     </string>
 
+    <string name="permission_camera_failed">获取摄像头权限失败</string>
+    <string name="permission_camera_never_ask">获取摄像头权限失败，请自行打开</string>
+
 </resources>
 

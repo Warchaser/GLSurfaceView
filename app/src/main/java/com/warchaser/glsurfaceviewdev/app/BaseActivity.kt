@@ -7,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import com.warchaser.glsurfaceviewdev.util.Constants
 
 open class BaseActivity : AppCompatActivity(){
 
+    protected lateinit var TAG : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TAG = Constants.getSimpleClassName(this)
     }
 
     override fun onDestroy() {
