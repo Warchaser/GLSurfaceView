@@ -49,11 +49,6 @@ public class CameraAPI2Fragment extends AbstractCameraFragment {
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener;
 
     /**
-     * TensorFlow定义的像素尺寸(一个方形的宽和高)
-     * */
-    private final Size INPUT_SIZE;
-
-    /**
      * 当前相机Id
      * */
     private String mCameraId;
@@ -101,9 +96,8 @@ public class CameraAPI2Fragment extends AbstractCameraFragment {
             final int layoutResId,
             final ConnectionCallback connectionCallback,
             final int textureViewResId){
-        super(layoutResId, textureViewResId);
+        super(layoutResId, textureViewResId, inputSize);
         mOnImageAvailableListener = imageAvailableListener;
-        INPUT_SIZE = inputSize;
         mConnectionCallback = connectionCallback;
     }
 
@@ -118,7 +112,7 @@ public class CameraAPI2Fragment extends AbstractCameraFragment {
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-        configureTransform(width, height);
+            configureTransform(width, height);
         }
 
         @Override

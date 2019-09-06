@@ -22,16 +22,13 @@ public class CameraAPIOneFragment extends AbstractCameraFragment {
     private Camera mCamera;
     private Camera.PreviewCallback mPreviewCallback;
 
-    private Size mDesiredSize;
-
     public CameraAPIOneFragment(
             final Camera.PreviewCallback previewCallback,
             final int layoutResId,
             final Size desiredSize,
             final int textureViewResId){
-        super(layoutResId, textureViewResId);
+        super(layoutResId, textureViewResId, desiredSize);
         mPreviewCallback = previewCallback;
-        mDesiredSize = desiredSize;
     }
 
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
@@ -51,7 +48,7 @@ public class CameraAPIOneFragment extends AbstractCameraFragment {
                     final Camera.Size size = cameraSizes.get(i);
                     sizes[i++] = new Size(size.width, size.height);
                 }
-                final Size previewSize = chooseOptimalSize(sizes, mDesiredSize.getWidth(), mDesiredSize.getHeight());
+                final Size previewSize = chooseOptimalSize(sizes, INPUT_SIZE.getWidth(), INPUT_SIZE.getHeight());
                 parameters.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
 
                 mCamera.setDisplayOrientation(90);

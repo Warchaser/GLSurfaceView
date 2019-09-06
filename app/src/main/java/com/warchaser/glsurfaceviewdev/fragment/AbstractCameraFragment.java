@@ -40,9 +40,15 @@ public class AbstractCameraFragment extends Fragment {
      * */
     protected AutoFitTextureView mTextureView;
 
-    public AbstractCameraFragment(final int layoutResId,final int textureViewResId){
+    /**
+     * TensorFlow定义的像素尺寸(一个方形的宽和高)
+     * */
+    protected final Size INPUT_SIZE;
+
+    public AbstractCameraFragment(final int layoutResId,final int textureViewResId, final Size inputSize){
         LAYOUT_RES_ID = layoutResId;
         TEXTURE_VIEW_RES_ID = textureViewResId;
+        INPUT_SIZE = inputSize;
     }
 
     /**
@@ -88,6 +94,11 @@ public class AbstractCameraFragment extends Fragment {
         final List<Size> bigEnough = new ArrayList<>();
         final List<Size> tooSmall = new ArrayList<>();
         for(final Size option : choices){
+
+            if(option == null){
+                continue;
+            }
+
             if(option.equals(desiredSize)){
                 exactSizeFound = true;
             }
