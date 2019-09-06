@@ -9,7 +9,10 @@ import android.media.Image
 import android.media.ImageReader
 import android.media.Image.Plane
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.util.Size
+import android.view.Surface
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.warchaser.glsurfaceviewdev.app.BaseActivity
@@ -26,25 +29,32 @@ import java.lang.Exception
 import java.nio.ByteBuffer
 
 @RuntimePermissions
-abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImageAvailableListener{
+abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImageAvailableListener {
 
-    private var mIsUseCamera2API : Boolean = false
+    private var mIsUseCamera2API: Boolean = false
 
-    private var mIsProcessingFrame : Boolean = false
+    private var mIsProcessingFrame: Boolean = false
 
-    protected var mPreviewWidth : Int = 0
-    protected var mPreviewHeight : Int = 0
+    @JvmField
+    protected var mPreviewWidth: Int = 0
+    @JvmField
+    protected var mPreviewHeight: Int = 0
 
-    private var mRGBBytes : IntArray ? = null
-    private val mYUVBytes : Array<ByteArray?> = Array(3) { byteArrayOf() }
-    private var mYRowStride : Int ? = null
+    private var mRGBBytes: IntArray? = null
+    private val mYUVBytes: Array<ByteArray?> = Array(3) { byteArrayOf() }
+    private var mYRowStride: Int? = null
 
-    private var mPostInferenceCallback : Runnable ? = null
-    private var mImageConverter : Runnable ? = null
+    private var mPostInferenceCallback: Runnable? = null
+    private var mImageConverter: Runnable? = null
 
-    private val mGoogleFragmentConnectionCallback = object : GoogleCameraFragment.ConnectionCallback{
-        override fun onPreviewSizeChosen(size: Size?, cameraRotation: Int) {
+    private var mHandler : Handler? = null
+    private var mHandlerThread : HandlerThread? = null
 
+    private val mGoogleFragmentConnectionCallback = object : GoogleCameraFragment.ConnectionCallback {
+        override fun onPreviewSizeChosen(size: Size, cameraRotation: Int) {
+            mPreviewHeight = size.height
+            mPreviewWidth = size.width
+            this@GoogleCameraAbstractActivity.onPreviewSizeChosen(size, cameraRotation)
         }
     }
 
@@ -62,11 +72,33 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        mHandlerThread = HandlerThread("inference")
+        mHandlerThread!!.start()
+        mHandler = Handler(mHandlerThread!!.looper)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        mHandlerThread!!.quitSafely()
+        try {
+            mHandlerThread?.join()
+            mHandlerThread = null
+            mHandler = null
+        } catch (e : Exception) {
+            e.printStackTrace()
+            NLog.printStackTrace(TAG, e)
+        }
+    }
+
     @NeedsPermission(Manifest.permission.CAMERA)
-    fun setFragment(){
+    fun setFragment() {
         val cameraId = chooseCamera()
-        var fragment : Fragment? = null
-        if(mIsUseCamera2API){
+        var fragment: Fragment? = null
+        if (mIsUseCamera2API) {
             val googleCameraFragment = GoogleCameraFragment.newInstance(
                     mGoogleFragmentConnectionCallback,
                     this@GoogleCameraAbstractActivity,
@@ -80,19 +112,19 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
         supportFragmentManager.beginTransaction().replace(getFragmentContainerId(), fragment!!).commit()
     }
 
-    private fun chooseCamera() : String{
-        val cameraManager : CameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    private fun chooseCamera(): String {
+        val cameraManager: CameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
-            for(cameraId in cameraManager.cameraIdList){
-                val characteristic : CameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId)
-                val facing : Int? = characteristic.get(CameraCharacteristics.LENS_FACING)
-                if(facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT){
+            for (cameraId in cameraManager.cameraIdList) {
+                val characteristic: CameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId)
+                val facing: Int? = characteristic.get(CameraCharacteristics.LENS_FACING)
+                if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
                     continue
                 }
 
-                val map : StreamConfigurationMap? = characteristic.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                val map: StreamConfigurationMap? = characteristic.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
 
-                if(map == null){
+                if (map == null) {
                     continue
                 }
 
@@ -104,7 +136,7 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
                 return cameraId
 
             }
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             NLog.printStackTrace(TAG, e)
         }
@@ -112,9 +144,9 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
         return ""
     }
 
-    private fun isHardwareLevelSupported(characteristics: CameraCharacteristics, requiredLevel : Int) : Boolean{
+    private fun isHardwareLevelSupported(characteristics: CameraCharacteristics, requiredLevel: Int): Boolean {
         val deviceLevel = characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL)
-        if(deviceLevel == CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY){
+        if (deviceLevel == CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY) {
             return requiredLevel == deviceLevel
         }
 
@@ -122,42 +154,42 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
-    fun onCameraPermissionFailed(){
+    fun onCameraPermissionFailed() {
         showToast("获取摄像头权限失败")
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
-    fun onCameraPermissionNeverAsk(){
+    fun onCameraPermissionNeverAsk() {
         SettingsUtil.getInstance().startPermissionsActivity(this)
         showToast("获取摄像头权限失败，请自行打开")
     }
 
     override fun onImageAvailable(reader: ImageReader?) {
-        if(mPreviewHeight == 0 || mPreviewWidth == 0){
+        if (mPreviewHeight == 0 || mPreviewWidth == 0) {
             return
         }
 
-        if(mRGBBytes == null){
+        if (mRGBBytes == null) {
             mRGBBytes = IntArray(mPreviewWidth * mPreviewHeight)
         }
 
         try {
-            val image : Image? = reader?.acquireLatestImage()
-            if(image == null){
+            val image: Image? = reader?.acquireLatestImage()
+            if (image == null) {
                 return
             }
 
-            if(mIsProcessingFrame){
+            if (mIsProcessingFrame) {
                 image.close()
                 return
             }
 
             mIsProcessingFrame = true
-            val planes : Array<Plane> = image.planes
+            val planes: Array<Plane> = image.planes
             fillBytes(planes, mYUVBytes)
             mYRowStride = planes[0].rowStride
-            val uvRowStride : Int = planes[1].rowStride
-            val uvPixelStride : Int = planes[1].pixelStride
+            val uvRowStride: Int = planes[1].rowStride
+            val uvPixelStride: Int = planes[1].pixelStride
 
             mImageConverter = Runnable {
                 ImageReaderUtils.convertYUV420ToARGB8888(
@@ -181,36 +213,58 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
             processImage()
 
 
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             NLog.printStackTrace(TAG, e)
         }
     }
 
-    protected fun fillBytes(planes : Array<Plane>, yuvBytes : Array<ByteArray?>){
-        for(i in 0 until planes.size){
-            val buffer : ByteBuffer = planes[i].buffer
-            if(yuvBytes[i] == null){
+    protected fun fillBytes(planes: Array<Plane>, yuvBytes: Array<ByteArray?>) {
+        for (i in 0 until planes.size) {
+            val buffer: ByteBuffer = planes[i].buffer
+            if (yuvBytes[i] == null) {
                 yuvBytes[i] = ByteArray(buffer.capacity())
             }
             buffer.get(yuvBytes[i])
         }
     }
 
+    protected fun getScreenOrientation(): Int {
+        return when (windowManager.defaultDisplay.rotation) {
+            Surface.ROTATION_270 -> 270
+            Surface.ROTATION_180 -> 180
+            Surface.ROTATION_90 -> 90
+            else -> 0
+        }
+    }
+
+    protected fun getRGBBytes() : IntArray?{
+        mImageConverter?.run()
+        return mRGBBytes
+    }
+
+    protected fun ready4NextImage(){
+        mPostInferenceCallback?.run()
+    }
+
+    @Synchronized
+    protected fun runInBackground(runnable: Runnable){
+        mHandler?.post(runnable)
+    }
+
     protected abstract fun processImage()
 
-    protected abstract fun getFragmentLayoutResId() : Int
+    protected abstract fun getFragmentLayoutResId(): Int
 
-    protected abstract fun getTextureViewId() : Int
+    protected abstract fun getTextureViewId(): Int
 
-    protected abstract fun getActivityLayoutResId() : Int
+    protected abstract fun getActivityLayoutResId(): Int
 
-    protected abstract fun getFragmentContainerId() : Int
+    protected abstract fun getFragmentContainerId(): Int
 
-    protected abstract fun onPreviewSizeChosen(size : Size, rotation : Int)
+    protected abstract fun onPreviewSizeChosen(size: Size, rotation: Int)
 
-    protected abstract fun getDesiredPreviewFrameSize() : Size
-
+    protected abstract fun getDesiredPreviewFrameSize(): Size
 
 
 }

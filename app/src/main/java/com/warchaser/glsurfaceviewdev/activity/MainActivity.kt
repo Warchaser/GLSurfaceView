@@ -22,13 +22,13 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initialize(){
-//        mBtnCamera.setOnClickListener(object : View.OnClickListener{
-//            override fun onClick(v: View?) {
-//                Intent(this@MainActivity, CameraActivity::class.java).apply {
-//                    startActivity(this)
-//                }
-//            }
-//        })
+        mBtnCamera.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                Intent(this@MainActivity, GoogleTensorFlowLiteActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        })
 
         mBtnPhotoView.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
