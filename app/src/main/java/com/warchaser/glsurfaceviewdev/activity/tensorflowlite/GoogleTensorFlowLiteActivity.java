@@ -1,4 +1,4 @@
-package com.warchaser.glsurfaceviewdev.activity;
+package com.warchaser.glsurfaceviewdev.activity.tensorflowlite;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -11,7 +11,7 @@ import com.warchaser.glsurfaceviewdev.util.ImageReaderUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-public class GoogleTensorFlowLiteActivity extends GoogleCameraAbstractActivity{
+public class GoogleTensorFlowLiteActivity extends GoogleCameraAbstractActivity {
 
     private static final boolean MAINTAIN_ASPECT = true;
     private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
@@ -39,13 +39,7 @@ public class GoogleTensorFlowLiteActivity extends GoogleCameraAbstractActivity{
         final Canvas canvas = new Canvas(mCroppedBitmap);
         canvas.drawBitmap(mRGBFrameBitmap, mFrameToCropTransform, null);
 
-        runInBackground(new Runnable() {
-            @Override
-            public void run() {
 
-                ready4NextImage();
-            }
-        });
     }
 
     @Override

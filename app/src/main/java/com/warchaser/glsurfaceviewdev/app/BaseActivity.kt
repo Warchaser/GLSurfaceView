@@ -1,13 +1,14 @@
 package com.warchaser.glsurfaceviewdev.app
 
 import android.graphics.Color
+import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import com.warchaser.glsurfaceviewdev.util.Constants
+import com.warchaser.glsurfaceviewdev.util.ToastUtil
 
 open class BaseActivity : AppCompatActivity(){
 
@@ -16,10 +17,12 @@ open class BaseActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TAG = Constants.getSimpleClassName(this)
+        AppManager.getInstance().addActivity(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        AppManager.getInstance().removeActivity(this)
     }
 
     protected fun fullScreen(){
@@ -36,19 +39,23 @@ open class BaseActivity : AppCompatActivity(){
      * 弹出toast的公共方法
      */
     fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        ToastUtil.showToast(message)
     }
 
     fun showToast(strResourceId:Int){
-        Toast.makeText(this,strResourceId, Toast.LENGTH_SHORT).show()
+        ToastUtil.showToast(strResourceId)
     }
 
     fun showToastLong(message: String){
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        ToastUtil.showToastLong(message)
     }
 
     fun showToastLong(strResourceId:Int){
-        Toast.makeText(this, strResourceId, Toast.LENGTH_LONG).show()
+        ToastUtil.showToastLong(strResourceId)
+    }
+
+    protected fun getCameraManager() : CameraManager{
+        return AppManager.getInstance().getCameraManager(this)
     }
 
 }

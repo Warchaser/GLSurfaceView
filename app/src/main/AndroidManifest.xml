@@ -28,10 +28,6 @@
         </activity>
 
         <activity
-            android:name=".activity.OpenGLCameraActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity
             android:name=".activity.PhotoViewActivity"
             android:screenOrientation="portrait"/>
 
@@ -68,7 +64,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".activity.GoogleTensorFlowLiteActivity"
+            android:name=".activity.tensorflowlite.GoogleTensorFlowLiteActivity"
             android:screenOrientation="portrait"/>
 
         <provider

@@ -3,8 +3,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.warchaser.glsurfaceviewdev.R
+import com.warchaser.glsurfaceviewdev.activity.tensorflowlite.GoogleTensorFlowLiteActivity
 import com.warchaser.glsurfaceviewdev.app.BaseActivity
+import com.warchaser.titlebar.util.StatusBarUtil
 import kotlinx.android.synthetic.*
+import kotlinx.android.synthetic.main.activity_drawer.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -13,6 +16,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        StatusBarUtil.cutOutTitleBar(mTitleBar, this)
         initialize()
     }
 

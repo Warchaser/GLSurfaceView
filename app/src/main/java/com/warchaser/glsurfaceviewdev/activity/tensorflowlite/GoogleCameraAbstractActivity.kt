@@ -1,7 +1,7 @@
-package com.warchaser.glsurfaceviewdev.activity
+package com.warchaser.glsurfaceviewdev.activity.tensorflowlite
 
 import android.Manifest
-import android.content.Context
+import android.hardware.Camera
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.hardware.camera2.params.StreamConfigurationMap
@@ -16,7 +16,8 @@ import android.view.Surface
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.warchaser.glsurfaceviewdev.app.BaseActivity
-import com.warchaser.glsurfaceviewdev.fragment.GoogleCameraFragment
+import com.warchaser.glsurfaceviewdev.fragment.CameraAPI2Fragment
+import com.warchaser.glsurfaceviewdev.fragment.CameraAPIOneFragment
 import com.warchaser.glsurfaceviewdev.util.ImageReaderUtils
 import com.warchaser.glsurfaceviewdev.util.NLog
 import com.warchaser.glsurfaceviewdev.util.SettingsUtil
@@ -29,7 +30,7 @@ import java.lang.Exception
 import java.nio.ByteBuffer
 
 @RuntimePermissions
-abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImageAvailableListener {
+abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImageAvailableListener, Camera.PreviewCallback {
 
     private var mIsUseCamera2API: Boolean = false
 
@@ -50,7 +51,7 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
     private var mHandler : Handler? = null
     private var mHandlerThread : HandlerThread? = null
 
-    private val mGoogleFragmentConnectionCallback = object : GoogleCameraFragment.ConnectionCallback {
+    private val mGoogleFragmentConnectionCallback = object : CameraAPI2Fragment.ConnectionCallback {
         override fun onPreviewSizeChosen(size: Size, cameraRotation: Int) {
             mPreviewHeight = size.height
             mPreviewWidth = size.width
@@ -99,21 +100,29 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
         val cameraId = chooseCamera()
         var fragment: Fragment? = null
         if (mIsUseCamera2API) {
-            val googleCameraFragment = GoogleCameraFragment.newInstance(
+            val googleCameraFragment = CameraAPI2Fragment.newInstance(
                     mGoogleFragmentConnectionCallback,
                     this@GoogleCameraAbstractActivity,
                     getFragmentLayoutResId(),
                     getDesiredPreviewFrameSize(),
-                    getTextureViewId())
+                    getTextureViewId()
+            )
             googleCameraFragment.setCameraId(cameraId)
             fragment = googleCameraFragment
+        } else {
+            fragment = CameraAPIOneFragment(
+                    this,
+                    getFragmentLayoutResId(),
+                    getDesiredPreviewFrameSize(),
+                    getTextureViewId()
+            )
         }
 
         supportFragmentManager.beginTransaction().replace(getFragmentContainerId(), fragment!!).commit()
     }
 
     private fun chooseCamera(): String {
-        val cameraManager: CameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val cameraManager: CameraManager = getCameraManager()
         try {
             for (cameraId in cameraManager.cameraIdList) {
                 val characteristic: CameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId)
@@ -212,11 +221,51 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
 
             processImage()
 
+            runInBackground(Runnable { ready4NextImage() })
 
         } catch (e: Exception) {
             e.printStackTrace()
             NLog.printStackTrace(TAG, e)
         }
+    }
+
+    override fun onPreviewFrame(data: ByteArray?, camera: Camera?) {
+        if(mIsProcessingFrame){
+            return
+        }
+
+        try {
+            if(mRGBBytes == null){
+                val previewSize : Camera.Size? = camera?.parameters?.previewSize
+
+                previewSize?.run {
+                    mPreviewHeight = height
+                    mPreviewWidth = width
+
+                    mRGBBytes = IntArray(mPreviewWidth * mPreviewHeight)
+                    onPreviewSizeChosen(Size(width, height), 90)
+                }
+
+            }
+        } catch (e : Exception) {
+            e.printStackTrace()
+            NLog.printStackTrace(TAG, e)
+        }
+
+        mIsProcessingFrame = true
+        mYUVBytes[0] = data
+        mYRowStride = mPreviewWidth
+
+        mImageConverter = Runnable { ImageReaderUtils.convertYUV420SPToARGB8888(data, mPreviewWidth, mPreviewHeight, mRGBBytes) }
+
+        mPostInferenceCallback = Runnable {
+            camera?.addCallbackBuffer(data)
+            mIsProcessingFrame = false
+        }
+
+        processImage()
+
+        runInBackground(Runnable { ready4NextImage() })
     }
 
     protected fun fillBytes(planes: Array<Plane>, yuvBytes: Array<ByteArray?>) {
