@@ -53,4 +53,6 @@ dependencies {
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.5.0"
 
     implementation 'org.tensorflow:tensorflow-android:+'
+    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
 }
