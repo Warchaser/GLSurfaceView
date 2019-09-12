@@ -7,13 +7,13 @@ import com.warchaser.glsurfaceviewdev.activity.tensorflowlite.GoogleTensorFlowLi
 import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import com.warchaser.titlebar.util.StatusBarUtil
 import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.activity_drawer.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fullScreen()
         setContentView(R.layout.activity_main)
 
         StatusBarUtil.cutOutTitleBarCus(mTitleBar, this)

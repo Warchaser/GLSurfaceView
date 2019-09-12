@@ -1,47 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activity.MainActivity"
     android:gravity="center">
 
-    <Button
-        android:id="@+id/mBtnCamera"
-        android:layout_width="wrap_content"
+    <com.warchaser.titlebar.TitleBar
+        android:id="@+id/mTitleBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="OpenGLCamera"/>
+        app:backGroundColor="@color/colorPrimary"
+        app:themeCus="blue"
+        app:titleText="MainActivity"/>
 
-    <Button
-        android:id="@+id/mBtnPhotoView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PhotoView"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/mBtnLongPress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="素质三连"/>
+        <Button
+            android:id="@+id/mBtnCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OpenGLCamera"/>
 
-    <Button
-        android:id="@+id/mBtnNavigationView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NavigationView"/>
+        <Button
+            android:id="@+id/mBtnPhotoView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PhotoView"/>
 
-    <Button
-        android:id="@+id/mBtnOpenGL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_open_gl"/>
+        <Button
+            android:id="@+id/mBtnLongPress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="素质三连"/>
 
-    <Button
-        android:id="@+id/mBtnSpecifyFolder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_open_specify_folder"/>
+        <Button
+            android:id="@+id/mBtnNavigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NavigationView"/>
+
+        <Button
+            android:id="@+id/mBtnOpenGL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_open_gl"/>
+
+        <Button
+            android:id="@+id/mBtnSpecifyFolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_open_specify_folder"/>
+
+    </LinearLayout>
 
 </LinearLayout>

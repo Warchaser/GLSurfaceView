@@ -48,12 +48,14 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fullScreen()
         setContentView(R.layout.activity_drawer)
 
         initialize()
     }
 
     private fun initialize(){
+        StatusBarUtil.cutOutTitleBarCus(mTitleBar, this)
         mNavigationView.setNavigationItemSelectedListener(this)
         val menuView = mNavigationView.getChildAt(0)
         if(menuView != null && menuView is NavigationMenuView){
@@ -140,13 +142,6 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
                 setCurrentTag(checkedId)
                 switchFragment(FragmentStackManager.getInstance().getCertainFragment(mCurrentFragmentTag).fragment)
-            }
-        })
-
-        mDrawerLayout.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
-            override fun onGlobalLayout() {
-                StatusBarUtil.cutOutTitleBarCus(mTitleBar, this@DrawerActivity)
-                mDrawerLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
 
