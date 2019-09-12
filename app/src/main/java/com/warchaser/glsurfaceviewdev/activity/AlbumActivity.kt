@@ -24,6 +24,7 @@ import com.warchaser.glsurfaceviewdev.adapter.ImageShowingAdapter
 import com.warchaser.glsurfaceviewdev.app.BaseActivity
 import com.warchaser.glsurfaceviewdev.util.Constants
 import com.warchaser.glsurfaceviewdev.util.DisplayUtil
+import com.warchaser.glsurfaceviewdev.util.HandlerUtils
 import com.warchaser.glsurfaceviewdev.util.NLog
 import com.warchaser.glsurfaceviewdev.view.SquareLayout
 import kotlinx.android.synthetic.main.activity_media_scan.*
@@ -154,7 +155,7 @@ class AlbumActivity : BaseActivity() {
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun getImages() {
         if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
-            sendMessage(MESSAGE_ERROR, getString(R.string.no_external_storage_mounted), -1, -1)
+            HandlerUtils.sendMessage(mMessageHandler, MESSAGE_ERROR, getString(R.string.no_external_storage_mounted), -1, -1)
             return
         }
 
@@ -171,7 +172,7 @@ class AlbumActivity : BaseActivity() {
                         MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC")
             } catch (e: Exception) {
                 NLog.printStackTrace("AlbumActivity", e)
-                sendMessage(MESSAGE_ERROR, getString(R.string.no_folder_found), -1, -1)
+                HandlerUtils.sendMessage(mMessageHandler, MESSAGE_ERROR, getString(R.string.no_folder_found), -1, -1)
             }
 
             if (mCursor == null) {
@@ -189,7 +190,7 @@ class AlbumActivity : BaseActivity() {
             mCursor.close()
             // 通知Handler扫描图片完成
 
-            sendMessage(MESSAGE_SCAN_RESULT, null, -1, -1)
+            HandlerUtils.sendMessage(mMessageHandler, MESSAGE_SCAN_RESULT, null, -1, -1)
         }).start()
 
     }
@@ -202,7 +203,7 @@ class AlbumActivity : BaseActivity() {
 
     private fun scanResult() {
         if (mImgPaths.isEmpty()) {
-            sendMessage(MESSAGE_ERROR, getString(R.string.no_pics_scanned), -1, -1)
+            HandlerUtils.sendMessage(mMessageHandler, MESSAGE_ERROR, getString(R.string.no_pics_scanned), -1, -1)
         } else {
             mAdapter?.notifyDataSetAllChanged(mImgPaths)
         }
@@ -218,27 +219,6 @@ class AlbumActivity : BaseActivity() {
         } else {
             val p = Pair.create(view, view.transitionName)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this, p).toBundle())
-        }
-    }
-
-    /**
-     * 向MessageHandler发送消息
-     */
-    private fun sendMessage(what: Int, `object`: Any?, arg1: Int, arg2: Int) {
-        if (mMessageHandler == null) {
-            return
-        }
-
-        if (`object` == null) {
-
-            if (arg1 == -1 && arg2 == -1) {
-                mMessageHandler!!.obtainMessage(what).sendToTarget()
-            } else {
-                mMessageHandler!!.obtainMessage(what, arg1, arg2).sendToTarget()
-            }
-
-        } else {
-            mMessageHandler!!.obtainMessage(what, `object`).sendToTarget()
         }
     }
 

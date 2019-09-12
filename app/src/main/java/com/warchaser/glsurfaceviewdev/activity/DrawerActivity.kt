@@ -145,7 +145,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
         mDrawerLayout.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
-                StatusBarUtil.cutOutTitleBar(mTitleBar, this@DrawerActivity)
+                StatusBarUtil.cutOutTitleBarCus(mTitleBar, this@DrawerActivity)
                 mDrawerLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })

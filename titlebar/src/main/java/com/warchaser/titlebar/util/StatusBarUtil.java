@@ -7,6 +7,7 @@ import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -165,7 +166,7 @@ final public class StatusBarUtil {
         }
     }
 
-    public static void cutOutTitleBar(TitleBar titleBar, Context context){
+    private static void cutOutTitleBar(TitleBar titleBar, Context context){
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
             return;
         }
@@ -181,6 +182,20 @@ final public class StatusBarUtil {
         } catch (Exception | Error e){
             e.printStackTrace();
         }
+    }
+
+    public static void cutOutTitleBarCus(final TitleBar titleBar, final Context context){
+        if(titleBar == null){
+            return;
+        }
+
+        titleBar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                cutOutTitleBar(titleBar, context);
+                titleBar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
     }
 
     /**

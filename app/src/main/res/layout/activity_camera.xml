@@ -5,4 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    tools:context=".activity.tensorflowlite.GoogleTensorFlowLiteActivity" />
+    tools:context=".activity.tensorflowlite.GoogleTensorFlowLiteActivity" >
+
+    <TextView
+        android:id="@+id/mTvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/white"/>
+
+</FrameLayout>

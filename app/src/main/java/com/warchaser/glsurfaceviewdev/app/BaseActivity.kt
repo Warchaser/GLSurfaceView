@@ -58,4 +58,5 @@ open class BaseActivity : AppCompatActivity(){
         return AppManager.getInstance().getCameraManager(this)
     }
 
+
 }

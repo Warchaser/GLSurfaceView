@@ -16,7 +16,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        StatusBarUtil.cutOutTitleBar(mTitleBar, this)
+        StatusBarUtil.cutOutTitleBarCus(mTitleBar, this)
         initialize()
     }
 

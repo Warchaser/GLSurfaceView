@@ -42,7 +42,7 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
     protected var mPreviewHeight: Int = 0
 
     private var mRGBBytes: IntArray? = null
-    private val mYUVBytes: Array<ByteArray?> = Array(3) { byteArrayOf() }
+    private val mYUVBytes = arrayOfNulls<ByteArray>(3)
     private var mYRowStride: Int? = null
 
     private var mPostInferenceCallback: Runnable? = null
@@ -221,7 +221,7 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
 
             processImage()
 
-            runInBackground(Runnable { ready4NextImage() })
+            ready4NextImage()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -265,7 +265,7 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
 
         processImage()
 
-        runInBackground(Runnable { ready4NextImage() })
+        ready4NextImage()
     }
 
     protected fun fillBytes(planes: Array<Plane>, yuvBytes: Array<ByteArray?>) {
