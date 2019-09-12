@@ -20,6 +20,7 @@ import com.warchaser.glsurfaceviewdev.tensorflow.QuantizedClassifier;
 import com.warchaser.glsurfaceviewdev.util.HandlerUtils;
 import com.warchaser.glsurfaceviewdev.util.ImageReaderUtils;
 import com.warchaser.glsurfaceviewdev.util.NLog;
+import com.warchaser.glsurfaceviewdev.util.StringUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -51,6 +52,7 @@ public class GoogleTensorFlowLiteActivity extends GoogleCameraAbstractActivity {
     private MessageHandler mMessageHandler;
 
     private TextView mTvTitle;
+    private TextView mTvPercent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,9 +62,9 @@ public class GoogleTensorFlowLiteActivity extends GoogleCameraAbstractActivity {
     }
 
     private void initialize(){
-        mMessageHandler = new MessageHandler(this);
 
         mTvTitle = findViewById(R.id.mTvTitle);
+        mTvPercent = findViewById(R.id.mTvPercent);
 
         recreateClassifier(mModel, mDevice, mNumOfThreads);
     }
@@ -75,6 +77,10 @@ public class GoogleTensorFlowLiteActivity extends GoogleCameraAbstractActivity {
 
         if(mTvTitle != null){
             mTvTitle.setText(recognition.getTitle());
+        }
+
+        if(mTvPercent != null){
+            mTvPercent.setText(StringUtils.getFormatString("%.2f", recognition.getConfidence() * 100) + "%");
         }
     }
 
@@ -106,6 +112,7 @@ public class GoogleTensorFlowLiteActivity extends GoogleCameraAbstractActivity {
                     HandlerUtils.sendMessage(mMessageHandler, MESSAGE_REFRESH_UI, recognition1, -1, -1);
                 }
 
+                ready4NextImage();
             }
         });
 
@@ -183,8 +190,28 @@ public class GoogleTensorFlowLiteActivity extends GoogleCameraAbstractActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if(mMessageHandler != null){
+            mMessageHandler.removeCallbacksAndMessages(null);
+            mMessageHandler = null;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mMessageHandler == null){
+            mMessageHandler = new MessageHandler(this);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        mTvPercent = null;
+        mTvTitle = null;
 
         if(mMessageHandler != null){
             mMessageHandler.removeCallbacksAndMessages(null);

@@ -221,7 +221,7 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
 
             processImage()
 
-            ready4NextImage()
+//            ready4NextImage()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -265,7 +265,7 @@ abstract class GoogleCameraAbstractActivity : BaseActivity(), ImageReader.OnImag
 
         processImage()
 
-        ready4NextImage()
+//        ready4NextImage()
     }
 
     protected fun fillBytes(planes: Array<Plane>, yuvBytes: Array<ByteArray?>) {

@@ -9,7 +9,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.RadioGroup
 import com.google.android.material.internal.NavigationMenuView
 import com.warchaser.glsurfaceviewdev.R
