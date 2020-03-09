@@ -10,7 +10,7 @@ import com.warchaser.glsurfaceviewdev.fragment.drawer.LiveInHomeFragment
 import com.warchaser.glsurfaceviewdev.fragment.drawer.OrderAnimationInHomeFragment
 import com.warchaser.glsurfaceviewdev.fragment.drawer.RecommendationInHomeFragment
 
-class HomeFragmentAdapter(fm : FragmentManager, context : Context) : FragmentPagerAdapter(fm){
+class HomeFragmentAdapter(fm : FragmentManager, context : Context) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
 
     private val mTitles : Array<String> = context.resources.getStringArray(R.array.home_titles)
     private val mFragments : Array<Fragment?>
@@ -19,7 +19,7 @@ class HomeFragmentAdapter(fm : FragmentManager, context : Context) : FragmentPag
         mFragments = arrayOfNulls(mTitles.size)
     }
 
-    override fun getItem(p0: Int): Fragment? {
+    override fun getItem(p0: Int): Fragment {
         if(mFragments[p0] == null){
             when(p0){
                 0-> mFragments[p0] = LiveInHomeFragment()
@@ -32,7 +32,7 @@ class HomeFragmentAdapter(fm : FragmentManager, context : Context) : FragmentPag
             }
         }
 
-        return mFragments[p0]
+        return mFragments[p0]!!
     }
 
     override fun getCount(): Int {

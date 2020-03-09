@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.flyco.tablayout.SlidingTabLayout
-        android:id="@+id/mSlidingTabLayout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:background="@color/color_white"
-        app:tl_tab_space_equal="true"
-        app:tl_textSelectColor="@color/colorPrimary"
-        app:tl_textUnselectColor="@color/colorAccent"
-        app:tl_indicator_color="@color/colorPrimary"
-        app:tl_indicator_height="3dip"
-        app:tl_indicator_margin_left="15dip"
-        app:tl_indicator_margin_right="15dip"
-        app:tl_indicator_width_equal_title="false"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"/>
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/mSlidingTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:background="@color/color_white"
+            app:tl_tab_space_equal="true"
+            app:tl_textSelectColor="@color/colorPrimary"
+            app:tl_textUnselectColor="@color/colorAccent"
+            app:tl_indicator_color="@color/colorPrimary"
+            app:tl_indicator_height="3dip"
+            app:tl_indicator_margin_left="15dip"
+            app:tl_indicator_margin_right="15dip"
+            app:tl_indicator_width_equal_title="false"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"/>
+
+    </FrameLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/mViewPager"

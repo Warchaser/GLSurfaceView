@@ -9,7 +9,7 @@ import com.warchaser.glsurfaceviewdev.fragment.drawer.GeneralInDynamicFragment
 import com.warchaser.glsurfaceviewdev.fragment.drawer.HotInDynamicFragment
 import com.warchaser.glsurfaceviewdev.fragment.drawer.VideosInDynamicFragment
 
-class DynamicFragmentAdapter(fm : FragmentManager, context : Context) : FragmentPagerAdapter(fm){
+class DynamicFragmentAdapter(fm : FragmentManager, context : Context) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
 
     private val mTitles : Array<String> = context.resources.getStringArray(R.array.dynamic_titles)
     private val mFragment : Array<Fragment?>
@@ -18,7 +18,7 @@ class DynamicFragmentAdapter(fm : FragmentManager, context : Context) : Fragment
         mFragment = arrayOfNulls(mTitles.size)
     }
 
-    override fun getItem(p0: Int): Fragment? {
+    override fun getItem(p0: Int): Fragment {
         if(mFragment[p0] == null){
             when(p0){
                 0-> mFragment[p0] = VideosInDynamicFragment()
@@ -30,7 +30,7 @@ class DynamicFragmentAdapter(fm : FragmentManager, context : Context) : Fragment
             }
         }
 
-        return mFragment[p0]
+        return mFragment[p0]!!
     }
 
     override fun getCount(): Int {
