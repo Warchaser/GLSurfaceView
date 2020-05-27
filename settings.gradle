@@ -1,2 +1,2 @@
-include ':app', ':library', ':titlebar'
+include ':app', ':library', ':titlebar', ':fragmentation_core'
 include ':openCVLibrary347'

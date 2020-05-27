@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'bintray-release'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 28
+
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compileOnly "androidx.appcompat:appcompat:1.1.0"
+}
