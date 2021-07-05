@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+
+version = "0.1.9-beta3"
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '30.0.3'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName version
+    }
+    sourceSets{
+        main.res.srcDirs 'res', 'res-public'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+}
+
+group = "com.bilibili"
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.sourceFiles
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+//    implementation "com.android.support:design:${rootProject.ext.supportVersion}"
+//    implementation "com.android.support.constraint:constraint-layout:${rootProject.ext.constraintVersion}"
+
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.material:material:1.2.1'
+}

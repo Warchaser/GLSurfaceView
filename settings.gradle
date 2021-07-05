@@ -1,2 +1,3 @@
 include ':app', ':library', ':titlebar', ':fragmentation_core'
 include ':openCVLibrary347'
+include ':magicasakura'
